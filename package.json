@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@fontsource/inter": "^5.2.6",
+    "@fortawesome/fontawesome-free": "^7.0.0",
+    "@tailwindcss/cli": "^4.1.11",
+    "alpinejs": "^3.14.9",
+    "notyf": "^3.10.0",
+    "tailwindcss": "^4.1.11"
+  }
+}
