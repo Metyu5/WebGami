@@ -5,44 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Racing Math Adventure - Game Matematika Mobil</title>
     
-    <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#FF6B35">
     <meta name="description" content="Game Matematika Racing yang seru untuk belajar sambil balapan">
     <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlJhY2luZyBNYXRoIEFkdmVudHVyZSAtIEdhbWUgTWF0ZW1hdGlrYSBNb2JpbCIsCiAgInNob3J0X25hbWUiOiAiUmFjaW5nIE1hdGgiLAogICJkZXNjcmlwdGlvbiI6ICJHYW1lIE1hdGVtYXRpa2EgUmFjaW5nIHlhbmcgc2VydSB1bnR1ayBiZWxhamFyIHNhbWJpbCBiYWxhcGFuIiwKICAic3RhcnRfdXJsIjogIi4vIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjRkZGRkZGIiwKICAidGhlbWVfY29sb3IiOiAiI0ZGNkIzNSIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU1UUTRMQ0JvWldsbmFIUTlJakUwT0NJZ2RtbGxkMEp2ZUQwaU1DQXdJREUwT0NBek5EZ2lJR1pwYkd3OUlpTkdSalpDTXpVaUlIaHRiRzV6UFNKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1EQXdMM04yWnlJK1BISmxZM1FnZUQwaU1qQWlJSGs5SWpJd0lpQjNhV1IwYUQwaU1UQTRJaUJvWldsbmFIUTlJakUwT0NJZ2NuZzlJakZqSWlCbWFXeHNQU0lqUWpjNFEwRWlMejQ4WlhOc2FYQnpaU0JqZUQwaU5UUWlJR041UFNJMU5DSWdWVUk5SWpJNElpQmhjajFpTlNJdlBqeDFjMlVnZUVocGJtdGlaRDBpUVVOMWMzUnZiU05EYjJ4dmNpTnViMjVsSWo0OGNHRjBhQ0JrUFNKTk1URWdOREJzTXpZaUx6NDhMM1Z6WlQ0OEwybHRZV2RsUGp3dmMzWm5QZz09IiwKICAgICAgInNpemVzIjogIjE0NHgxNDQiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfQogIF0sCiAgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0IiwKICAiY2F0ZWdvcmllcyI6IFsiZ2FtZXMiLCAiZWR1Y2F0aW9uIl0KfQ==">
     
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ4IiBoZWlnaHQ9IjE0OCIgdmlld0JveD0iMCAwIDE0OCAzNDgiIGZpbGw9IiNGRjZCMzUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iMTA4IiBoZWlnaHQ9IjE0OCIgcng9IjFjIiBmaWxsPSIjQjc4Q0EiLz48ZWxsaXBzZSBjeD0iNTQiIGN5PSI1NCIgVUI9IjI4IiBhcj1iNSIvPjx1c2UgeEhpbmtiZD0iQUN1c3RvbSNDb2xvciNub25lIj4KPHBhdGggZD0iTTExIDQwbDM2Ii8+PC91c2U+PC9pbWFnZT48L3N2Zz4=">
     
-    <!-- TailwindCSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'racing': ['Orbitron', 'monospace'],
-                    },
-                    colors: {
-                        'racing-orange': '#FF6B35',
-                        'racing-red': '#F7931E',
-                        'racing-blue': '#004D8F',
-                        'racing-green': '#7CB342',
-                        'racing-yellow': '#FFD600'
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="../../../src/output.css" rel="stylesheet" onerror="console.log('Local CSS failed')">
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Alpine.js -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
-    <!-- Phaser 3 -->
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
-    
     <style>
         body {
             font-family: 'Fredoka', sans-serif;
@@ -155,7 +128,6 @@
     </style>
 </head>
 <body class="racing-gradient min-h-screen">
-    <!-- Loading Screen -->
     <div id="loading" class="fixed inset-0 bg-gradient-to-br from-gray-900 via-red-900 to-orange-900 flex items-center justify-center z-50">
         <div class="text-center">
             <div class="car-bounce mb-8">
@@ -175,13 +147,9 @@
             </div>
         </div>
     </div>
-
-    <!-- Main App -->
     <div id="app" x-data="racingGameApp()" x-show="!loading" class="min-h-screen">
-        <!-- Menu Screen -->
         <div x-show="screen === 'menu'" class="min-h-screen flex flex-col items-center justify-center p-4 fade-in-race">
             <div class="text-center max-w-md w-full">
-                <!-- Logo -->
                 <div class="car-bounce mb-8">
                     <div class="w-40 h-40 bg-gradient-to-br from-red-500 via-orange-500 to-yellow-500 rounded-full flex items-center justify-center mx-auto shadow-2xl relative border-4 border-white">
                         <span class="text-8xl">🏎️</span>
@@ -190,33 +158,25 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- Title -->
                 <h1 class="text-6xl md:text-7xl font-black text-white mb-2 drop-shadow-lg racing-font" x-text="getText('title')"></h1>
                 <p class="text-2xl text-white/90 mb-8 drop-shadow racing-font" x-text="getText('subtitle')"></p>
-                
-                <!-- Buttons -->
                 <div class="space-y-4">
                     <button @click="startRace()" 
                             class="w-full race-button text-white font-bold py-5 px-8 rounded-2xl text-2xl racing-font engine-animation">
                         <span class="mr-3">🏁</span>
                         <span x-text="getText('startRace')"></span>
                     </button>
-                    
                     <button @click="showSettings()" 
                             class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-8 rounded-2xl text-lg shadow-lg transform transition hover:scale-105 racing-font">
                         <span class="mr-2">⚙️</span>
                         <span x-text="getText('settings')"></span>
                     </button>
-                    
                     <button @click="showGarage()" 
                             class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-4 px-8 rounded-2xl text-lg shadow-lg transform transition hover:scale-105 racing-font">
                         <span class="mr-2">🏆</span>
                         <span x-text="getText('garage')"></span>
                     </button>
                 </div>
-                
-                <!-- Language Toggle -->
                 <div class="mt-8 flex justify-center">
                     <button @click="toggleLanguage()" 
                             class="bg-white/20 hover:bg-white/30 text-white font-medium py-3 px-6 rounded-xl backdrop-blur-sm transition-colors racing-font">
@@ -226,14 +186,10 @@
                 </div>
             </div>
         </div>
-
-        <!-- Settings Screen -->
         <div x-show="screen === 'settings'" class="min-h-screen flex flex-col items-center justify-center p-4 fade-in-race">
             <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 max-w-md w-full zoom-in border-4 border-orange-400">
                 <h2 class="text-4xl font-bold text-gray-800 mb-6 text-center racing-font" x-text="getText('settings')"></h2>
-                
                 <div class="space-y-6">
-                    <!-- Sound Settings -->
                     <div class="flex items-center justify-between p-4 bg-orange-50 rounded-xl">
                         <span class="text-lg font-medium text-gray-700 racing-font" x-text="getText('engineSound')"></span>
                         <button @click="toggleSound()" 
@@ -243,8 +199,6 @@
                                  :class="soundEnabled ? 'translate-x-8' : 'translate-x-1'"></div>
                         </button>
                     </div>
-                    
-                    <!-- Music Settings -->
                     <div class="flex items-center justify-between p-4 bg-blue-50 rounded-xl">
                         <span class="text-lg font-medium text-gray-700 racing-font" x-text="getText('raceMusic')"></span>
                         <button @click="toggleMusic()" 
@@ -254,8 +208,6 @@
                                  :class="musicEnabled ? 'translate-x-8' : 'translate-x-1'"></div>
                         </button>
                     </div>
-                    
-                    <!-- Difficulty -->
                     <div class="p-4 bg-purple-50 rounded-xl">
                         <label class="block text-lg font-medium text-gray-700 mb-3 racing-font" x-text="getText('trackDifficulty')"></label>
                         <select x-model="difficulty" 
@@ -265,15 +217,12 @@
                             <option value="champion" x-text="getText('champion')"></option>
                         </select>
                     </div>
-                    
-                    <!-- Reset Progress -->
                     <button @click="resetProgress()" 
                             class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded-xl transition-colors racing-font">
                         <span class="mr-2">🔄</span>
                         <span x-text="getText('resetProgress')"></span>
                     </button>
                 </div>
-                
                 <button @click="screen = 'menu'" 
                         class="w-full mt-8 bg-gray-600 hover:bg-gray-700 text-white font-bold py-4 px-6 rounded-xl transition-colors racing-font">
                     <span class="mr-2">←</span>
@@ -281,8 +230,6 @@
                 </button>
             </div>
         </div>
-
-        <!-- Garage Screen -->
         <div x-show="screen === 'garage'" class="min-h-screen flex flex-col items-center justify-center p-4 fade-in-race">
             <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 max-w-md w-full zoom-in border-4 border-purple-400">
                 <h2 class="text-4xl font-bold text-gray-800 mb-6 text-center racing-font" x-text="getText('garage')"></h2>
@@ -308,7 +255,6 @@
                         <div class="text-3xl font-bold text-yellow-800 racing-font" x-text="gamesPlayed"></div>
                     </div>
                     
-                    <!-- Speed Rating -->
                     <div class="bg-gradient-to-r from-orange-100 to-red-200 p-4 rounded-xl border-2 border-orange-400">
                         <div class="text-sm text-orange-600 font-medium racing-font" x-text="getText('topSpeed')"></div>
                         <div class="text-3xl font-bold text-red-800 racing-font" x-text="topSpeed + ' km/h'"></div>
@@ -323,16 +269,13 @@
             </div>
         </div>
 
-        <!-- Race Screen -->
         <div x-show="screen === 'race'" class="min-h-screen track-bg">
-            <!-- Race Header -->
             <div class="bg-gray-900/90 backdrop-blur-sm shadow-lg p-4 border-b-4 border-yellow-400">
                 <div class="flex justify-between items-center max-w-4xl mx-auto">
                     <button @click="pauseRace()" 
                             class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg racing-font">
                         ⏸️ <span x-text="getText('pit')"></span>
                     </button>
-                    
                     <div class="text-center">
                         <div class="text-sm text-yellow-400 racing-font" x-text="getText('track')"></div>
                         <div class="text-xl font-bold text-white racing-font" x-text="currentLevel"></div>
@@ -343,7 +286,6 @@
                         <div class="text-xl font-bold text-green-400 racing-font" x-text="score.toLocaleString()"></div>
                     </div>
                     
-                    <!-- Speedometer -->
                     <div class="speedometer w-16 h-16 rounded-full flex items-center justify-center">
                         <div class="text-center">
                             <div class="text-xs text-orange-400 racing-font">SPEED</div>
@@ -353,11 +295,9 @@
                 </div>
             </div>
             
-            <!-- Phaser Game Container -->
             <div id="phaser-game" class="game-container"></div>
         </div>
 
-        <!-- Pause Modal -->
         <div x-show="showPauseModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
             <div class="bg-gray-900 rounded-3xl shadow-2xl p-8 max-w-sm w-full zoom-in border-4 border-orange-400">
                 <h3 class="text-3xl font-bold text-white mb-6 text-center racing-font" x-text="getText('pitStop')"></h3>
@@ -377,6 +317,55 @@
                             class="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-4 px-6 rounded-xl racing-font">
                         🏠 <span x-text="getText('backToGarage')"></span>
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <div x-show="showGameOverModal" class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+            <div class="bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900 rounded-3xl shadow-2xl p-8 max-w-sm w-full zoom-in border-4 border-gold">
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-br rounded-full flex items-center justify-center"
+                         :class="raceWon ? 'from-yellow-400 to-orange-500' : 'from-red-500 to-red-700'">
+                        <span class="text-5xl" x-text="raceWon ? '🏆' : '💥'"></span>
+                    </div>
+                    
+                    <h3 class="text-4xl font-bold text-white mb-4 racing-font" 
+                        x-text="raceWon ? getText('raceWon') : getText('raceOver')"></h3>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="bg-white/10 rounded-lg p-3">
+                            <div class="text-sm text-gray-300 racing-font" x-text="getText('points')"></div>
+                            <div class="text-2xl font-bold text-yellow-400 racing-font" x-text="score.toLocaleString()"></div>
+                        </div>
+                        
+                        <div class="bg-white/10 rounded-lg p-3">
+                            <div class="text-sm text-gray-300 racing-font" x-text="getText('winRate')"></div>
+                            <div class="text-2xl font-bold text-green-400 racing-font" 
+                                 x-text="Math.round((correctAnswers / totalQuestions) * 100) + '%'"></div>
+                        </div>
+                        
+                        <div class="bg-white/10 rounded-lg p-3">
+                            <div class="text-sm text-gray-300 racing-font" x-text="getText('topSpeed')"></div>
+                            <div class="text-2xl font-bold text-orange-400 racing-font" x-text="currentSpeed + ' km/h'"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <button x-show="raceWon" @click="nextLevel()" 
+                                class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-6 rounded-xl racing-font transform transition hover:scale-105">
+                            🏁 <span x-text="getText('nextTrack')"></span>
+                        </button>
+                        
+                        <button @click="restartRace()" 
+                                class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl racing-font transform transition hover:scale-105">
+                            🔄 <span x-text="getText('tryAgain')"></span>
+                        </button>
+                        
+                        <button @click="exitToMenu()" 
+                                class="w-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-bold py-4 px-6 rounded-xl racing-font transform transition hover:scale-105">
+                            🏠 <span x-text="getText('backToGarage')"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -419,7 +408,9 @@
                 tryAgain: 'Coba Lagi',
                 fuel: 'Bahan Bakar',
                 speed: 'Kecepatan',
-                position: 'Posisi'
+                position: 'Posisi',
+                loadingQuestions: 'Memuat Soal...',
+                errorLoadingQuestions: 'Error memuat soal, menggunakan soal default'
             },
             en: {
                 title: 'RACING MATH',
@@ -455,9 +446,17 @@
                 tryAgain: 'Try Again',
                 fuel: 'Fuel',
                 speed: 'Speed',
-                position: 'Position'
+                position: 'Position',
+                loadingQuestions: 'Loading Questions...',
+                errorLoadingQuestions: 'Error loading questions, using default questions'
             }
         };
+
+        // Get soal_id from URL parameters
+        function getSoalIdFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('soal_id') || '1'; // Default to 1 if not provided
+        }
 
         // Main Alpine.js App
         function racingGameApp() {
@@ -476,12 +475,17 @@
                 topSpeed: parseInt(localStorage.getItem('racingGameTopSpeed')) || 0,
                 currentSpeed: 0,
                 showPauseModal: false,
+                showGameOverModal: false,
+                raceWon: false,
                 phaserGame: null,
                 currentQuestion: null,
                 timeLeft: 60,
                 correctAnswers: 0,
                 totalQuestions: 0,
                 carPosition: 1,
+                soalId: getSoalIdFromURL(),
+                databaseQuestions: [],
+                currentQuestionIndex: 0,
 
                 init() {
                     // Hide loading screen after 2.5 seconds
@@ -491,6 +495,9 @@
 
                     // Load saved stats
                     this.loadStats();
+                    
+                    // Load questions from database
+                    this.loadQuestionsFromDatabase();
                 },
 
                 getText(key) {
@@ -520,14 +527,73 @@
                     this.screen = 'garage';
                 },
 
+                async loadQuestionsFromDatabase() {
+                    try {
+                        console.log("Soal ID yang akan difetch:", this.soalId);
+                        const response = await fetch(`fetch_questions.php?soal_id=${this.soalId}`);
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        
+                        const data = await response.json();
+                        console.log('Questions loaded:', data);
+                        
+                        if (Array.isArray(data) && data.length > 0) {
+                            this.databaseQuestions = data;
+                            console.log(`Loaded ${data.length} questions from database`);
+                        } else {
+                            throw new Error('No questions found in database');
+                        }
+                    } catch (error) {
+                        console.error('Error loading questions:', error);
+                        // Fallback to dummy questions if database fails
+                        this.generateFallbackQuestions();
+                    }
+                },
+
+                generateFallbackQuestions() {
+                    console.log('Using fallback questions');
+                    const fallbackQuestions = [
+                        {bilangan1: 5, bilangan2: 3, operator: '+', jawaban_benar: 8},
+                        {bilangan1: 7, bilangan2: 4, operator: '+', jawaban_benar: 11},
+                        {bilangan1: 9, bilangan2: 6, operator: '+', jawaban_benar: 15},
+                        {bilangan1: 12, bilangan2: 8, operator: '+', jawaban_benar: 20},
+                        {bilangan1: 15, bilangan2: 5, operator: '+', jawaban_benar: 20},
+                        {bilangan1: 10, bilangan2: 3, operator: '-', jawaban_benar: 7},
+                        {bilangan1: 15, bilangan2: 7, operator: '-', jawaban_benar: 8},
+                        {bilangan1: 20, bilangan2: 12, operator: '-', jawaban_benar: 8}
+                    ];
+                    this.databaseQuestions = fallbackQuestions;
+                },
+
                 startRace() {
                     this.screen = 'race';
                     this.score = 0;
                     this.currentSpeed = 60;
                     this.carPosition = 3;
+                    this.currentQuestionIndex = 0;
+                    this.correctAnswers = 0;
+                    this.totalQuestions = 0;
+                    this.showGameOverModal = false;
                     this.gamesPlayed++;
                     this.saveStats();
+                    
+                    // Shuffle questions for variety
+                    this.shuffleQuestions();
+                    
                     this.initPhaserRaceGame();
+                },
+
+                shuffleQuestions() {
+                    if (this.databaseQuestions.length > 0) {
+                        // Fisher-Yates shuffle algorithm
+                        for (let i = this.databaseQuestions.length - 1; i > 0; i--) {
+                            const j = Math.floor(Math.random() * (i + 1));
+                            [this.databaseQuestions[i], this.databaseQuestions[j]] = 
+                            [this.databaseQuestions[j], this.databaseQuestions[i]];
+                        }
+                    }
                 },
 
                 pauseRace() {
@@ -546,6 +612,7 @@
 
                 restartRace() {
                     this.showPauseModal = false;
+                    this.showGameOverModal = false;
                     this.startRace();
                 },
 
@@ -555,6 +622,34 @@
                     if (this.phaserGame) {
                         this.phaserGame.destroy(true);
                         this.phaserGame = null;
+                    }
+                },
+
+                exitToMenu() {
+                    this.showGameOverModal = false;
+                    this.screen = 'menu';
+                    if (this.phaserGame) {
+                        this.phaserGame.destroy(true);
+                        this.phaserGame = null;
+                    }
+                },
+
+                nextLevel() {
+                    this.currentLevel++;
+                    this.showGameOverModal = false;
+                    this.saveStats();
+                    this.startRace();
+                },
+
+                endRace(won) {
+                    this.raceWon = won;
+                    this.showGameOverModal = true;
+                    if (won) {
+                        this.playRacingSound('victory');
+                        this.updateScore(500); // Bonus for completing race
+                    }
+                    if (this.phaserGame && this.phaserGame.scene.scenes[0]) {
+                        this.phaserGame.scene.scenes[0].scene.pause();
                     }
                 },
 
@@ -612,6 +707,48 @@
                 },
 
                 generateRacingQuestion() {
+                    // Use database questions if available
+                    if (this.databaseQuestions.length > 0) {
+                        const dbQuestion = this.databaseQuestions[this.currentQuestionIndex % this.databaseQuestions.length];
+                        this.currentQuestionIndex++;
+                        
+                        // Generate wrong answers based on correct answer
+                        const correctAnswer = dbQuestion.jawaban_benar;
+                        const wrongAnswers = [];
+                        
+                        // Generate 2 wrong answers
+                        while (wrongAnswers.length < 2) {
+                            let wrong;
+                            if (dbQuestion.operator === '×' || dbQuestion.operator === '*') {
+                                wrong = correctAnswer + (Math.floor(Math.random() * 20) - 10);
+                            } else {
+                                wrong = correctAnswer + (Math.floor(Math.random() * 10) - 5);
+                            }
+                            if (wrong !== correctAnswer && wrong >= 0 && !wrongAnswers.includes(wrong)) {
+                                wrongAnswers.push(wrong);
+                            }
+                        }
+                        
+                        // Shuffle answers
+                        const answers = [correctAnswer, ...wrongAnswers].sort(() => Math.random() - 0.5);
+                        
+                        this.currentQuestion = {
+                            num1: dbQuestion.bilangan1,
+                            num2: dbQuestion.bilangan2,
+                            operation: dbQuestion.operator,
+                            correctAnswer: correctAnswer,
+                            answers: answers,
+                            correctIndex: answers.indexOf(correctAnswer)
+                        };
+                        
+                        return this.currentQuestion;
+                    }
+                    
+                    // Fallback to generated questions if no database questions
+                    return this.generateFallbackQuestion();
+                },
+
+                generateFallbackQuestion() {
                     let maxNum1, maxNum2, operation;
                     
                     switch (this.difficulty) {
@@ -787,7 +924,7 @@
                     let playerCar, opponentCars = [];
                     let currentQuestion;
                     let questionCount = 0;
-                    let questionsPerRace = 8;
+                    let questionsPerRace = Math.min(8, app.databaseQuestions.length || 8);
                     let background, trees = [];
                     let speedLines = [];
 
@@ -835,7 +972,7 @@
                     }
 
                     function create() {
-                        const scene = this;
+                        const scene = this; // 'this' refers to the scene context here
                         
                         // Create scrolling road background
                         background = this.add.graphics();
@@ -922,7 +1059,10 @@
                                 fontFamily: 'Orbitron'
                             }).setOrigin(0.5);
 
-                            button.on('pointerdown', () => selectAnswer(i));
+                            // ============= PERUBAHAN DI SINI =============
+                            button.on('pointerdown', () => selectAnswer(scene, i));
+                            // ===========================================
+
                             button.on('pointerover', () => {
                                 button.setTint(0xFFFFAA);
                                 this.tweens.add({
@@ -993,6 +1133,7 @@
 
                     function generateNewQuestion() {
                         currentQuestion = app.generateRacingQuestion();
+                        if (!currentQuestion) return; // Guard against no questions
                         const operatorSymbol = currentQuestion.operation;
                         questionText.setText(`${currentQuestion.num1} ${operatorSymbol} ${currentQuestion.num2} = ?`);
                         
@@ -1002,17 +1143,20 @@
                         });
                     }
 
-                    function selectAnswer(buttonIndex) {
+                    // ============= PERUBAHAN DI SINI =============
+                    function selectAnswer(scene, buttonIndex) {
+                        if (!currentQuestion) return; // Guard clause
                         const selectedAnswer = currentQuestion.answers[buttonIndex];
                         const isCorrect = app.checkRacingAnswer(selectedAnswer);
                         
                         // Visual feedback
                         const button = answerButtons[buttonIndex].button;
+                        
                         if (isCorrect) {
                             button.setTint(0x00FF00);
                             
                             // Boost effect
-                            this.tweens.add({
+                            scene.tweens.add({ // Menggunakan 'scene' dari parameter
                                 targets: playerCar,
                                 scaleX: 1.2,
                                 scaleY: 1.2,
@@ -1021,7 +1165,7 @@
                             });
                             
                             // Show boost message
-                            const boostText = this.scene.add.text(config.width / 2, config.height / 2, app.getText('correct'), {
+                            const boostText = scene.add.text(config.width / 2, config.height / 2, app.getText('correct'), {
                                 fontSize: '28px',
                                 fill: '#00FF00',
                                 fontFamily: 'Orbitron',
@@ -1029,7 +1173,7 @@
                                 strokeThickness: 2
                             }).setOrigin(0.5);
                             
-                            this.scene.tweens.add({
+                            scene.tweens.add({ // Menggunakan 'scene' dari parameter
                                 targets: boostText,
                                 alpha: 0,
                                 y: boostText.y - 50,
@@ -1044,7 +1188,7 @@
                             answerButtons[correctIndex].button.setTint(0x00FF00);
                             
                             // Crash effect
-                            this.tweens.add({
+                            scene.tweens.add({ // Menggunakan 'scene' dari parameter
                                 targets: playerCar,
                                 angle: -10,
                                 duration: 100,
@@ -1054,7 +1198,7 @@
                             });
                             
                             // Show wrong message
-                            const wrongText = this.scene.add.text(config.width / 2, config.height / 2, app.getText('wrong'), {
+                            const wrongText = scene.add.text(config.width / 2, config.height / 2, app.getText('wrong'), {
                                 fontSize: '28px',
                                 fill: '#FF3333',
                                 fontFamily: 'Orbitron',
@@ -1062,7 +1206,7 @@
                                 strokeThickness: 2
                             }).setOrigin(0.5);
                             
-                            this.scene.tweens.add({
+                            scene.tweens.add({ // Menggunakan 'scene' dari parameter
                                 targets: wrongText,
                                 alpha: 0,
                                 y: wrongText.y - 50,
@@ -1070,97 +1214,93 @@
                                 onComplete: () => wrongText.destroy()
                             });
                         }
-
-                        // Clear button tints and continue
-                        setTimeout(() => {
-                            answerButtons.forEach(btn => btn.button.clearTint());
-                            questionCount++;
+                        
+                        // Disable buttons to prevent multiple clicks
+                        answerButtons.forEach(btn => btn.button.disableInteractive());
+                        
+                        // Generate next question after delay
+                        scene.time.delayedCall(2000, () => {
+                             // Re-enable buttons
+                            answerButtons.forEach(btn => btn.button.setInteractive().clearTint());
                             
+                            questionCount++;
                             if (questionCount >= questionsPerRace) {
-                                raceComplete();
+                                // End race based on performance
+                                const winRate = app.totalQuestions > 0 ? (app.correctAnswers / app.totalQuestions) : 0;
+                                const speedRequirement = app.currentSpeed >= 100;
+                                const raceWon = winRate >= 0.6 && speedRequirement;
+                                app.endRace(raceWon);
                             } else {
                                 generateNewQuestion();
                             }
-                        }, 1500);
+                        });
                     }
+                    // ===========================================
 
                     function startRaceTimer() {
+                        timeLeft = 60; // Reset timer
                         raceTimer = setInterval(() => {
                             timeLeft--;
                             timerText.setText(`⏱️ ${timeLeft}s`);
                             
                             if (timeLeft <= 0) {
-                                raceTimeUp();
+                                clearInterval(raceTimer);
+                                raceTimer = null;
+                                // Time's up - end race based on current performance
+                                const winRate = app.totalQuestions > 0 ? (app.correctAnswers / app.totalQuestions) : 0;
+                                const raceWon = winRate >= 0.5 && app.currentSpeed >= 80;
+                                app.endRace(raceWon);
                             }
                         }, 1000);
                     }
 
-                    function raceTimeUp() {
-                        clearInterval(raceTimer);
-                        
-                        // Show time up message
-                        const timeUpText = this.scene.add.text(config.width / 2, config.height / 2, app.getText('timeUp'), {
-                            fontSize: '36px',
-                            fill: '#FF4444',
-                            fontFamily: 'Orbitron',
-                            stroke: '#000',
-                            strokeThickness: 3
-                        }).setOrigin(0.5);
-                        
-                        setTimeout(() => {
-                            app.exitRace();
-                        }, 2500);
-                    }
-
-                    function raceComplete() {
-                        clearInterval(raceTimer);
-                        app.currentLevel++;
-                        app.saveStats();
-                        app.playRacingSound('victory');
-                        
-                        // Victory celebration
-                        const victoryText = this.scene.add.text(config.width / 2, config.height / 2, app.getText('raceWon'), {
-                            fontSize: '32px',
-                            fill: '#FFD600',
-                            fontFamily: 'Orbitron',
-                            stroke: '#000',
-                            strokeThickness: 3
-                        }).setOrigin(0.5);
-                        
-                        // Confetti effect
-                        for (let i = 0; i < 20; i++) {
-                            const confetti = this.scene.add.rectangle(
-                                Math.random() * config.width,
-                                -10,
-                                5, 5,
-                                Math.random() * 0xFFFFFF
-                            );
-                            
-                            this.scene.tweens.add({
-                                targets: confetti,
-                                y: config.height + 10,
-                                duration: 2000 + Math.random() * 1000,
-                                onComplete: () => confetti.destroy()
-                            });
-                        }
-                        
-                        setTimeout(() => {
-                            app.exitRace();
-                        }, 3500);
-                    }
-
-                    // Create the game
+                    // Initialize the game
                     this.phaserGame = new Phaser.Game(config);
                 }
             }
         }
 
-        // Initialize the app when DOM is loaded
+        // Initialize app when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
-            // Hide loading screen after everything is loaded
+            // Hide loading screen
             setTimeout(() => {
-                document.getElementById('loading').style.display = 'none';
+                const loadingScreen = document.getElementById('loading');
+                if (loadingScreen) {
+                    loadingScreen.style.display = 'none';
+                }
             }, 2500);
+        });
+
+        // Service Worker Registration for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZnVuY3Rpb24oZXZlbnQpIHsKICBjb25zb2xlLmxvZygnU2VydmljZSBXb3JrZXIgaW5zdGFsbGVkJyk7Cn0pOwoKc2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGZ1bmN0aW9uKGV2ZW50KSB7CiAgZXZlbnQucmVzcG9uZFdpdGgoCiAgICBjYWNoZXMubWF0Y2goZXZlbnQucmVxdWVzdCkKICAgICAgLnRoZW4oZnVuY3Rpb24ocmVzcG9uc2UpIHsKICAgICAgICByZXR1cm4gcmVzcG9uc2UgfHwgZmV0Y2goZXZlbnQucmVxdWVzdCk7CiAgICAgIH0pCiAgKTsKfSk7')
+                .then(function(registration) {
+                    console.log('ServiceWorker registration successful');
+                }).catch(function(err) {
+                    console.log('ServiceWorker registration failed');
+                });
+            });
+        }
+
+        // Prevent zoom on iOS
+        document.addEventListener('gesturestart', function (e) {
+            e.preventDefault();
+        });
+
+        // Prevent context menu on long press
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // Handle window resize for responsive game
+        window.addEventListener('resize', function() {
+            if (window.racingGameApp && window.racingGameApp.phaserGame) {
+                window.racingGameApp.phaserGame.scale.resize(
+                    window.innerWidth > 768 ? 800 : window.innerWidth,
+                    window.innerHeight > 600 ? 500 : window.innerHeight - 150
+                );
+            }
         });
     </script>
 </body>

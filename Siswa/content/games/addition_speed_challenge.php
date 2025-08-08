@@ -1,26 +1,33 @@
 <?php
-$base_dir = __DIR__ . '/../../..';
-require_once $base_dir . '/config/koneksi.php';
+require_once '../../../config/koneksi.php';
 
-// Ambil daftar soal hanya untuk kelas 3 dari database
-$soal_list = [];
-try {
-    $sql = "SELECT soal_id, nama, kategori, kelas, tingkat FROM soal WHERE kelas = 3 ORDER BY soal_id";
-    $result = $koneksi->query($sql);
-    
-    if ($result && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $soal_list[] = $row;
-        }
-    }
-} catch (Exception $e) {
-    // Jika database error, gunakan data fallback yang relevan
-    $soal_list = [
-        ['soal_id' => 1, 'nama' => 'Soal Penjumlahan', 'kategori' => 'Penjumlahan', 'kelas' => 3, 'tingkat' => 'Mudah'],
-        ['soal_id' => 2, 'nama' => 'Soal Perkalian', 'kategori' => 'Perkalian', 'kelas' => 3, 'tingkat' => 'Sedang']
-    ];
+$kelas = 3; // fokus hanya kelas 3
+$tingkat = isset($_GET['tingkat']) ? $_GET['tingkat'] : '';
+$tingkatSafe = $koneksi->real_escape_string($tingkat);
+
+$sql = "
+    SELECT DISTINCT s.soal_id, s.nama, s.kategori, s.kelas, s.tingkat
+    FROM soal s
+    WHERE s.kelas = $kelas
+";
+if (!empty($tingkatSafe)) {
+    $sql .= " AND s.tingkat = '$tingkatSafe'";
 }
+$sql .= " ORDER BY RAND()";
+
+$result = $koneksi->query($sql);
+if (!$result) {
+    die("Query gagal: " . $koneksi->error);
+}
+
+$soal_list = [];
+while ($row = $result->fetch_assoc()) {
+    $soal_list[] = $row;
+}
+$koneksi->close();
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="id">
@@ -215,7 +222,6 @@ try {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px)';
                 card.style.transition = 'all 0.5s ease';
-                
                 // Hover sound effect (optional)
                 card.addEventListener('mouseenter', function() {
                     // Add subtle scale effect
