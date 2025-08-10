@@ -28,10 +28,6 @@
     <script>
       if ('serviceWorker' in navigator) {
           window.addEventListener('load', function() {
-              // Path ke service worker harus relatif terhadap root domain web server
-              // Contoh: '/WebGami/service-worker.js' jika proyek WebGami ada di root server
-              // ATAU 'service-worker.js' jika file index2.php dan service-worker.js ada di folder yang SAMA (WebGami)
-              // Saya asumsikan `/WebGami/service-worker.js` karena Anda sudah menggunakannya sebelumnya.
               navigator.serviceWorker.register('/WebGami/service-worker.js') 
                   .then(function(registration) {
                       console.log('ServiceWorker registration successful with scope: ', registration.scope);
@@ -44,7 +40,6 @@
     </script>
     
     <style>
-      /* Variabel CSS tetap sama */
       :root {
         --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);

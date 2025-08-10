@@ -177,7 +177,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['foto']) && !empty($_SESSION
                            <div class="game-card rounded-xl overflow-hidden shadow-lg">
                             <img src="./assets/images/game-1.jpg" alt="Game Penjumlahan Cepat" class="w-full h-40 object-cover">
                             <div class="p-4">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-1">Penjumlahan Cepat!</h3>
+                                <h3 class="text-lg font-semibold text-gray-900 mb-1">Kelas 3</h3>
                                 <p class="text-sm text-gray-600 mb-3">Latih kecepatan penjumlahanmu sampai puluhan ribu. Cocok untuk kelas 3 & 4.</p>
                                 <a href="../Siswa/content/games/addition_speed_challenge.php" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200 flex items-center justify-center">
                                     Mainkan Sekarang <i class="fas fa-play ml-2"></i>
@@ -188,7 +188,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['foto']) && !empty($_SESSION
                     <div class="game-card rounded-xl overflow-hidden shadow-lg">
                         <img src="./assets/images/game-2.png" alt="Game Petualangan Perkalian" class="w-full h-40 object-cover">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Perkalian Naga</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Kelas 4</h3>
                             <p class="text-sm text-gray-600 mb-3">Kalahkan naga dengan menjawab soal perkalian. Untuk kelas 4 & 5.</p>
                             <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
                                 Mainkan Sekarang <i class="fas fa-play ml-2"></i>
@@ -199,7 +199,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['foto']) && !empty($_SESSION
                     <div class="game-card rounded-xl overflow-hidden shadow-lg">
                         <img src="./assets/images/game-3.jpg" alt="Game Pembagian Seru" class="w-full h-40 object-cover">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Kuis Pembagian Harta</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Kelas 5</h3>
                             <p class="text-sm text-gray-600 mb-3">Bagikan harta dengan adil, kuasai pembagian!</p>
                             <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
                                 Mainkan Sekarang <i class="fas fa-play ml-2"></i>
@@ -207,38 +207,6 @@ if (isset($_SESSION['username']) && isset($_SESSION['foto']) && !empty($_SESSION
                         </div>
                     </div>
 
-                    <div class="game-card rounded-xl overflow-hidden shadow-lg">
-                        <img src="./assets/images/game-4.jpg" alt="Game Pecahan Pizza" class="w-full h-40 object-cover">
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Pizza Pecahan</h3>
-                            <p class="text-sm text-gray-600 mb-3">Belajar pecahan sambil memotong pizza. Asyik dan bikin lapar!</p>
-                            <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
-                                Mainkan Sekarang <i class="fas fa-play ml-2"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="game-card rounded-xl overflow-hidden shadow-lg">
-                        <img src="./assets/images/game-5.jpg" alt="Game Geometri" class="w-full h-40 object-cover">
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Bangun Ruang Petualang</h3>
-                            <p class="text-sm text-gray-600 mb-3">Jelajahi dunia bangun ruang. Kenali kubus, balok, dan lainnya!</p>
-                            <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
-                                Mainkan Sekarang <i class="fas fa-play ml-2"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="game-card rounded-xl overflow-hidden shadow-lg">
-                        <img src="./assets/images/game-6.png" alt="Game Statistik" class="w-full h-40 object-cover">
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Grafik Seru!</h3>
-                            <p class="text-sm text-gray-600 mb-3">Kumpulkan data dan buat grafik. Pelajari rata-rata, median, dan modus!</p>
-                            <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
-                                Mainkan Sekarang <i class="fas fa-play ml-2"></i>
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </section>
         </main>
