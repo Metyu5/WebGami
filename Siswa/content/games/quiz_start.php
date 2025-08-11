@@ -989,8 +989,8 @@
             let playerCar, opponentCars = [], roadLines = [], trees = [];
             let particles, explosionEmitter;
             let screenShake = { x: 0, y: 0, intensity: 0 };
-            let gameSpeed = 1.5; // Slower game speed
-            let carSpeed = 4;
+            let gameSpeed = 4; // Slower game speed
+            let carSpeed = 8;
             let playerCarX = config.width / 2;
             let collisionCooldown = 0;
             let carSpawnTimer = 0; // Timer for spawning cars
@@ -1191,7 +1191,7 @@
                             const carIndex = Math.floor(Math.random() * 3);
                             const car = scene.physics.add.image(lane, -100, `opponent-car-${carIndex}`);
                             car.body.setSize(30, 60, 5, 10);
-                            car.setData('speed', 0.8 + Math.random() * 0.4); // Slower speed: 0.8-1.2
+                            car.setData('speed', 1.5 + Math.random() * 0.5); // Slower speed: 0.8-1.2
                             opponentCars.push(car);
                             
                             // Set up collision detection for this car
