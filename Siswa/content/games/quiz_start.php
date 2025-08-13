@@ -10,11 +10,13 @@
     <link href="../../../src/output.css" rel="stylesheet" onerror="console.log('Local CSS failed')">
 
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
-    
+    <!-- Notyf -->
+    <link rel="stylesheet" href="../../../assets/vendor/notyf.min.css">
+    <script defer src="../../../assets/vendor/notyf.min.js"></script>
+    <!-- Alpine.js -->
+    <script defer src="../../../assets/vendor/alpine.min.js"></script>
+    <!-- Phaser -->
+    <script defer src="../../../assets/vendor/phaser.min.js"></script>
     <style>
         * { 
             margin: 0; 

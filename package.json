@@ -5,6 +5,7 @@
     "@tailwindcss/cli": "^4.1.11",
     "alpinejs": "^3.14.9",
     "notyf": "^3.10.0",
+    "phaser": "^3.90.0",
     "tailwindcss": "^4.1.11"
   }
 }

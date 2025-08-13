@@ -36,7 +36,7 @@ $koneksi->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pilih Materi - Balap Matematika</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="../../src/output.css" rel="stylesheet" onerror="console.log('Local CSS failed')">
+    <link href="../../../src/output.css" rel="stylesheet" onerror="console.log('Local CSS failed')">
     <link rel="icon" type="image/png" href="../../image/logo-tutwuri-SD.png" />
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
