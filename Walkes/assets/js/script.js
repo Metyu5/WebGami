@@ -515,9 +515,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let initialPageUrlForContent = '../content/walikelas_content.php'; // Default format data-page
 
-    // KARENA URL BROWSER ADALAH admin/pages/dashboard.php, maka pageParamFromUrl akan menjadi 'dashboard_content'
-    // Jadi, kita harus mengubah ini menjadi 'pages/dashboard_content' saat pertama kali masuk
-    // Atau jika pageParamFromUrl adalah 'pages/walikelas', kita akan mengubahnya menjadi '../content/wali_kelas.php'
+    
     if (pageParamFromUrl.startsWith('pages/')) {
         const contentName = pageParamFromUrl.replace('pages/', ''); // Ambil hanya nama file: 'dashboard_content' atau 'walikelas'
         initialPageUrlForContent = `../content/${contentName}.php`; // Ubah ke format ../content/file.php

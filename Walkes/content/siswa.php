@@ -335,7 +335,7 @@ $no_start = $offset + 1;
                     <div class="relative w-full">
                         <input type="text" x-model="searchQuery" 
                                @keydown.enter="searchStudents()"
-                               placeholder="🔍 Cari siswa berdasarkan NISN atau Nama Pengguna..."
+                               placeholder="🔍 Cari NISN atau Nama Pengguna.."
                                class="pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full sm:w-80 transition-all duration-300 ease-in-out shadow-sm hover:shadow-md">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search h-5 w-5 text-gray-400"></i>

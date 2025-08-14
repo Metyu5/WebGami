@@ -81,6 +81,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['foto']) && !empty($_SESSION
             .profile-dropdown-mobile {
                 display: none;
             }
+          
         }
     </style>
 </head>
@@ -174,8 +175,8 @@ if (isset($_SESSION['username']) && isset($_SESSION['foto']) && !empty($_SESSION
             <section>
                 <h2 class="text-lg font-bold text-gray-800 mb-3">Game Pilihan Untukmu</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                           <div class="game-card rounded-xl overflow-hidden shadow-lg">
-                            <img src="./assets/images/game-1.jpg" alt="Game Penjumlahan Cepat" class="w-full h-40 object-cover">
+                    <div class="game-card rounded-xl overflow-hidden shadow-lg">
+                        <img src="./assets/images/game-1.jpg" alt="Game Penjumlahan Cepat" class="w-full h-40 object-cover">
                             <div class="p-4">
                                 <h3 class="text-lg font-semibold text-gray-900 mb-1">Kelas 3</h3>
                                 <p class="text-sm text-gray-600 mb-3">Latih kecepatan penjumlahanmu sampai puluhan ribu. Cocok untuk kelas 3 & 4.</p>

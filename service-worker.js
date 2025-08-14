@@ -1,7 +1,6 @@
-// Nama cache Anda. Ubah ini jika Anda melakukan perubahan signifikan pada aset yang di-cache
-const CACHE_NAME = 'sigam-cache-v2'; // Ubah versi cache untuk memastikan service worker baru diinstal
 
-// Daftar URL aset yang ingin Anda cache agar tersedia secara offline
+const CACHE_NAME = 'sigam-cache-v2'; 
+
 const urlsToCache = [
   '/WebGami/', // Halaman root proyek Anda
   '/WebGami/index2.php', // Halaman login Anda
@@ -58,9 +57,7 @@ self.addEventListener('fetch', event => {
           .catch(() => {
             // Ini akan dipicu jika fetch gagal (misal: offline dan tidak ada di cache)
             console.log('Service Worker: Fetch failed for', event.request.url);
-            // Anda bisa mengembalikan halaman offline khusus di sini, misalnya:
-            // return caches.match('/WebGami/offline.html'); 
-            // Untuk sementara, kita tidak mengembalikan apapun jika offline dan tidak ada di cache
+
           });
       })
   );

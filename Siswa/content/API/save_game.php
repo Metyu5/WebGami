@@ -33,13 +33,6 @@ try {
     $query = "INSERT INTO hasil_permainan (siswa_id, soal_id, skor, jawaban_benar, total_pertanyaan, tingkat_kesulitan) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $koneksi->prepare($query);
 
-    // Perbaiki bind_param: tambahkan 'i' untuk soalId
-    // i: integer (siswa_id)
-    // i: integer (soal_id)
-    // i: integer (skor)
-    // i: integer (jawaban_benar)
-    // i: integer (total_pertanyaan)
-    // s: string (tingkat_kesulitan)
     $stmt->bind_param("iiiiis", $siswaId, $soalId, $score, $correctAnswers, $totalQuestions, $difficulty);
     
     if ($stmt->execute()) {

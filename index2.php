@@ -6,7 +6,7 @@
     <title>SIGAM - Login Siswa</title>
     <link rel="icon" type="image/png" href="image/logo-tutwuri-SD.png" />
     
-    <meta name="theme-color" content="#667eea" /> 
+    <meta name="theme-color" content="#3b82f6" /> 
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -14,323 +14,122 @@
     
     <link rel="manifest" href="manifest.json" /> 
     <link href="./src/output.css" rel="stylesheet">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
-    
-    <link rel="stylesheet" href="./node_modules/notyf/notyf.min.css">
-    
-    <script src="./node_modules/alpinejs/dist/cdn.min.js" defer></script>
+    <link rel="stylesheet" href="./node_modules/notyf/notyf.min.css" />
+    <script defer src="./assets/vendor/alpine.min.js"></script>
     
     <script>
       if ('serviceWorker' in navigator) {
-          window.addEventListener('load', function() {
-              navigator.serviceWorker.register('/WebGami/service-worker.js') 
-                  .then(function(registration) {
-                      console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                  })
-                  .catch(function(err) {
-                      console.log('ServiceWorker registration failed: ', err);
-                  });
-          });
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/WebGami/service-worker.js') 
+            .then(function(registration) {
+              console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            })
+            .catch(function(err) {
+              console.log('ServiceWorker registration failed: ', err);
+            });
+        });
       }
     </script>
     
     <style>
-      :root {
-        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        --glass-bg: rgba(255, 255, 255, 0.25);
-        --glass-border: rgba(255, 255, 255, 0.18);
-        --shadow-light: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        --shadow-heavy: 0 15px 35px rgba(0, 0, 0, 0.1);
-      }
-      
       * {
         -webkit-tap-highlight-color: transparent;
       }
       
       body { 
-        /* Ubah font-family dari 'Inter' menjadi 'Poppins' */
         font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
-        background: var(--primary-gradient);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
       
-      /* Glass Morphism Effects */
-      .glass-morphism {
-        background: var(--glass-bg);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        border: 1px solid var(--glass-border);
-        box-shadow: var(--shadow-light);
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
       }
       
-      .glass-card {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+      @keyframes pulse-glow {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 0.8; }
       }
       
-      /* Interactive Elements */
-      .interactive-input {
-        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        position: relative;
-        overflow: hidden;
+      .animate-fade-in {
+        animation: fadeIn 0.6s ease-out;
       }
       
-      .interactive-input::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: left 0.5s;
+      .animate-pulse-glow {
+        animation: pulse-glow 2s infinite;
       }
       
-      .interactive-input:focus {
-        transform: translateY(-2px);
-        box-shadow: 0 15px 35px rgba(102, 126, 234, 0.15);
-        border-color: #667eea;
-      }
-      
-      .interactive-input:focus::before {
-        left: 100%;
-      }
-      
-      /* Button Animations */
-      .btn-primary {
-        background: var(--primary-gradient);
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        position: relative;
-        overflow: hidden;
-      }
-      
-      .btn-primary::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        transition: width 0.6s, height 0.6s;
-      }
-      
-      .btn-primary:hover::before {
-        width: 300px;
-        height: 300px;
-      }
-      
-      .btn-primary:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
-      }
-      
-      .btn-primary:active {
-        transform: translateY(-1px);
-      }
-      
-      /* Icon Animations */
-      .icon-bounce {
-        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      }
-      
-      .icon-bounce:hover {
-        transform: scale(1.2) rotate(5deg);
-      }
-      
-      .icon-pulse {
-        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-      }
-      
-      @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.7; }
-      }
-      
-      /* Floating Elements */
-      .float-animation {
-        animation: float 6s ease-in-out infinite;
-      }
-      
-      @keyframes float {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        33% { transform: translateY(-10px) rotate(1deg); }
-        66% { transform: translateY(-5px) rotate(-1deg); }
-      }
-      
-      /* Slide Animations */
-      .slide-up {
-        animation: slideUp 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
-      }
-      
-      @keyframes slideUp {
-        from {
-          opacity: 0;
-          transform: translateY(50px);
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
         }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      
-      /* Responsive Adaptations */
-      @media (min-width: 768px) {
-        .desktop-layout {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          min-height: 100vh;
-        }
-        
-        .desktop-hero {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .desktop-form {
-          background: #ffffff;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 2rem;
-        }
-      }
-      
-      @media (max-width: 767px) {
-        .mobile-layout {
-          background: var(--primary-gradient);
-          min-height: 100vh;
-        }
-      }
-      
-      /* iOS Specific Styles */
-      @supports (-webkit-backdrop-filter: blur(10px)) {
-        .ios-blur {
-          -webkit-backdrop-filter: blur(25px);
-          backdrop-filter: blur(25px);
-        }
-      }
-      
-      /* Loading Animation */
-      .loading-spinner {
-        width: 20px;
-        height: 20px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        border-top-color: white;
-        animation: spin 1s ease-in-out infinite;
-      }
-      
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
-      
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 6px;
-      }
-      
-      ::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.1);
-      }
-      
-      ::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: 3px;
-      }
-      
-      /* Notyf Custom Styles */
-      .notyf__toast--success {
-        background: var(--success-gradient) !important;
-      }
-      
-      .notyf__toast--error {
-        background: var(--secondary-gradient) !important;
-      }
-      
-      /* Focus Indicators */
-      .focus-ring:focus {
-        outline: 2px solid #667eea;
-        outline-offset: 2px;
-      }
-      
-      /* Optimalisasi untuk Reduced Motion */
-      body.reduced-motion .float-animation,
-      body.reduced-motion .icon-bounce,
-      body.reduced-motion .icon-pulse,
-      body.reduced-motion .animate-pulse {
-        animation: none !important;
-        transition: none !important;
-        transform: none !important;
       }
     </style>
   </head>
   
-  <body x-data="loginApp()" x-init="init()">
-    <script src="./node_modules/notyf/notyf.min.js"></script> 
+  <body x-data="loginApp()" x-init="init()" class="min-h-screen font-['Poppins']">
+    <script src="./node_modules/notyf/notyf.min.js"></script>
 
-    <div class="hidden md:block">
-      <div class="desktop-layout">
-        <div class="desktop-hero">
-          <div class="text-center text-white z-10 relative">
-            <div class="mb-8">
-              <div class="inline-block relative">
-                <div class="absolute inset-0 bg-white rounded-full blur-xl opacity-20 animate-pulse"></div>
-                <img src="image/logo-tutwuri-SD.png" alt="SIGAM Logo" class="relative w-32 h-32 rounded-full shadow-2xl float-animation border-4 border-white/30 object-cover" />
-              </div>
+    <!-- Desktop Layout -->
+    <div class="hidden md:flex min-h-screen">
+      <!-- Left Hero Section -->
+      <div class="flex-1 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 flex items-center justify-center p-8 relative overflow-hidden">
+        <!-- Background decoration -->
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
+        
+        <div class="text-center text-white max-w-md relative z-10 animate-fade-in">
+          <div class="mb-8">
+            <div class="relative inline-block">
+              <div class="absolute inset-0 bg-white/20 rounded-full blur-xl animate-pulse-glow"></div>
+              <img src="image/logo-tutwuri-SD.png" alt="SIGAM Logo" class="relative w-28 h-28 rounded-full shadow-2xl object-cover border-4 border-white/30" />
             </div>
-            <h1 class="text-5xl font-black mb-4 tracking-tight">SIGAM</h1>
-            <p class="text-xl font-medium opacity-90 mb-8">Sistem Informasi Gamifikasi</p>
-            <div class="flex justify-center space-x-8">
-              <div class="text-center">
-                <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-3 mx-auto icon-bounce">
-                  <i class="fas fa-graduation-cap text-2xl"></i>
-                </div>
-                <p class="text-sm font-medium">Pembelajaran</p>
+          </div>
+          
+          <h1 class="text-5xl font-bold mb-4 tracking-tight">SIGAM</h1>
+          <p class="text-xl text-blue-100 mb-8">Sistem Informasi Gamifikasi</p>
+          
+          <div class="grid grid-cols-3 gap-6">
+            <div class="text-center group">
+              <div class="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center mb-3 mx-auto transition-transform group-hover:scale-110 border border-white/20">
+                <i class="fas fa-graduation-cap text-xl"></i>
               </div>
-              <div class="text-center">
-                <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-3 mx-auto icon-bounce">
-                  <i class="fas fa-trophy text-2xl"></i>
-                </div>
-                <p class="text-sm font-medium">Prestasi</p>
+              <p class="text-sm font-medium text-blue-100">Pembelajaran</p>
+            </div>
+            <div class="text-center group">
+              <div class="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center mb-3 mx-auto transition-transform group-hover:scale-110 border border-white/20">
+                <i class="fas fa-trophy text-xl"></i>
               </div>
-              <div class="text-center">
-                <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-3 mx-auto icon-bounce">
-                  <i class="fas fa-users text-2xl"></i>
-                </div>
-                <p class="text-sm font-medium">Komunitas</p>
+              <p class="text-sm font-medium text-blue-100">Prestasi</p>
+            </div>
+            <div class="text-center group">
+              <div class="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center mb-3 mx-auto transition-transform group-hover:scale-110 border border-white/20">
+                <i class="fas fa-users text-xl"></i>
               </div>
+              <p class="text-sm font-medium text-blue-100">Komunitas</p>
             </div>
           </div>
         </div>
-        
-        <div class="desktop-form">
-          <div class="w-full max-w-md slide-up">
-            <div class="text-center mb-8">
-              <h2 class="text-3xl font-bold text-gray-800 mb-2">Selamat Datang Kembali</h2>
-              <p class="text-gray-600">Masuk ke akun siswa Anda</p>
-            </div>
-            
+      </div>
+      
+      <!-- Right Form Section -->
+      <div class="flex-1 bg-gray-50 flex items-center justify-center p-8">
+        <div class="w-full max-w-md animate-fade-in">
+          <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Selamat Datang</h2>
+            <p class="text-gray-600">Masuk ke akun siswa Anda</p>
+          </div>
+          
+          <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
             <form action="auth/proses_login_siswa.php" method="POST" class="space-y-6" @submit="handleSubmit">
-              <div class="space-y-2">
-                <label for="nisn" class="block text-sm font-semibold text-gray-700">
+              <div>
+                <label for="nisn" class="block text-sm font-semibold text-gray-700 mb-2">
                   <i class="fas fa-id-badge text-blue-500 mr-2"></i>NISN
                 </label>
                 <div class="relative">
@@ -340,17 +139,17 @@
                     name="nisn" 
                     x-model="form.nisn"
                     placeholder="Masukkan NISN Anda" 
-                    class="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none interactive-input text-gray-700 placeholder-gray-400 font-medium focus-ring"
+                    class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none focus:bg-white transition-all duration-200 text-gray-700"
                     required 
                   />
                   <div class="absolute inset-y-0 right-0 pr-4 flex items-center">
-                    <i class="fas fa-user-check text-gray-400 icon-pulse" x-show="form.nisn.length > 0"></i>
+                    <i class="fas fa-check-circle text-green-500 transition-opacity" x-show="form.nisn.length > 8" x-transition.opacity></i>
                   </div>
                 </div>
               </div>
 
-              <div class="space-y-2" x-data="{ showPassword: false }">
-                <label for="password" class="block text-sm font-semibold text-gray-700">
+              <div x-data="{ showPassword: false }">
+                <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
                   <i class="fas fa-lock text-purple-500 mr-2"></i>Password
                 </label>
                 <div class="relative">
@@ -360,13 +159,13 @@
                     name="password" 
                     x-model="form.password"
                     placeholder="Masukkan password" 
-                    class="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none interactive-input text-gray-700 placeholder-gray-400 font-medium focus-ring"
+                    class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none focus:bg-white transition-all duration-200 text-gray-700"
                     required 
                   />
                   <button 
                     type="button" 
                     @click="showPassword = !showPassword"
-                    class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-purple-500 transition-colors icon-bounce"
+                    class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-purple-500 transition-colors"
                   >
                     <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
                   </button>
@@ -378,21 +177,21 @@
               <button 
                 type="submit" 
                 :disabled="loading"
-                class="w-full btn-primary text-white font-bold py-4 rounded-xl shadow-xl flex items-center justify-center space-x-3 disabled:opacity-70 disabled:cursor-not-allowed relative z-10"
+                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center space-x-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
               >
-                <div x-show="loading" class="loading-spinner"></div>
+                <div x-show="loading" class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                 <i x-show="!loading" class="fas fa-rocket"></i>
                 <span x-text="loading ? 'Memproses...' : 'Masuk Sekarang'"></span>
               </button>
             </form>
 
-            <div x-show="showInstallButton" x-transition.opacity class="text-center mt-6">
-                <button @click="installPWA()" class="btn-primary text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
-                    <i class="fas fa-download mr-2"></i> Instal Aplikasi SIGAM
-                </button>
+            <div x-show="showInstallButton" x-transition.opacity class="mt-6">
+              <button @click="installPWA()" class="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-semibold py-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
+                <i class="fas fa-download mr-2"></i> Instal Aplikasi SIGAM
+              </button>
             </div>
 
-            <div class="mt-8 text-center">
+            <div class="mt-6 text-center">
               <p class="text-gray-600 text-sm">
                 Belum punya akun? 
                 <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold transition-colors">Daftar di sini</a>
@@ -403,99 +202,102 @@
       </div>
     </div>
 
-    <div class="md:hidden mobile-layout min-h-screen flex flex-col">
-      <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute -top-10 -left-10 w-72 h-72 bg-white opacity-10 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
-        <div class="absolute -bottom-10 -right-10 w-72 h-72 bg-purple-300 opacity-10 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-1000"></div>
-        <div class="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-300 opacity-5 rounded-full mix-blend-multiply filter blur-2xl"></div>
-      </div>
-
-      <div class="flex-1 flex flex-col justify-center px-6 py-12 relative z-10">
-        <div class="text-center mb-12">
+    <!-- Mobile Layout -->
+    <div class="md:hidden min-h-screen bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 relative overflow-hidden">
+      <!-- Background decoration -->
+      <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.06"%3E%3Ccircle cx="20" cy="20" r="1.5"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
+      
+      <div class="relative z-10 flex flex-col min-h-screen p-6">
+        <!-- Header -->
+        <div class="text-center pt-12 pb-8 animate-fade-in">
           <div class="relative inline-block mb-6">
-            <div class="absolute inset-0 bg-white rounded-full blur-lg opacity-30 animate-pulse"></div>
-            <img src="image/logo-tutwuri-SD.png" alt="SIGAM Logo" class="relative w-24 h-24 mx-auto rounded-full shadow-2xl float-animation object-cover border-4 border-white/30" />
+            <div class="absolute inset-0 bg-white/20 rounded-full blur-lg animate-pulse-glow"></div>
+            <img src="image/logo-tutwuri-SD.png" alt="SIGAM Logo" class="relative w-20 h-20 rounded-full shadow-xl object-cover border-4 border-white/30" />
           </div>
-          <h1 class="text-3xl font-black text-white mb-2 tracking-tight">SIGAM</h1>
-          <p class="text-white/90 text-lg font-medium mb-2">Selamat Datang</p>
-          <p class="text-white/70 text-sm">Masuk ke akun siswa Anda</p>
+          <h1 class="text-3xl font-bold text-white mb-2">SIGAM</h1>
+          <p class="text-blue-100 text-lg">Selamat Datang</p>
+          <p class="text-blue-200 text-sm">Masuk ke akun siswa Anda</p>
         </div>
 
-        <div class="glass-card rounded-3xl p-6 mx-auto w-full max-w-sm slide-up ios-blur">
-          <form action="auth/proses_login_siswa.php" method="POST" class="space-y-5" @submit="handleSubmit">
-            <div class="space-y-2">
-              <label for="mobile-nisn" class="block text-sm font-semibold text-gray-700 flex items-center">
-                <i class="fas fa-id-badge text-blue-500 mr-2 icon-bounce"></i>NISN
-              </label>
-              <div class="relative">
-                <input 
-                  type="text" 
-                  id="mobile-nisn" 
-                  name="nisn" 
-                  x-model="form.nisn"
-                  placeholder="Masukkan NISN Anda" 
-                  class="w-full px-4 py-4 bg-white/80 border-2 border-gray-200 rounded-2xl focus:border-blue-500 focus:outline-none interactive-input text-gray-700 placeholder-gray-400 font-medium shadow-sm focus-ring"
-                  required 
-                />
-                <div class="absolute inset-y-0 right-0 pr-4 flex items-center">
-                  <i class="fas fa-check-circle text-green-500 icon-pulse" x-show="form.nisn.length > 8" x-transition></i>
+        <!-- Form Card -->
+        <div class="flex-1 flex items-center justify-center">
+          <div class="w-full max-w-sm bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-6 border border-white/20 animate-fade-in">
+            <form action="auth/proses_login_siswa.php" method="POST" class="space-y-5" @submit="handleSubmit">
+              <div>
+                <label for="mobile-nisn" class="block text-sm font-semibold text-gray-700 mb-2">
+                  <i class="fas fa-id-badge text-blue-500 mr-2"></i>NISN
+                </label>
+                <div class="relative">
+                  <input 
+                    type="text" 
+                    id="mobile-nisn" 
+                    name="nisn" 
+                    x-model="form.nisn"
+                    placeholder="Masukkan NISN Anda" 
+                    class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:border-blue-500 focus:outline-none focus:bg-white transition-all duration-200 text-gray-700"
+                    required 
+                  />
+                  <div class="absolute inset-y-0 right-0 pr-4 flex items-center">
+                    <i class="fas fa-check-circle text-green-500 transition-opacity" x-show="form.nisn.length > 8" x-transition.opacity></i>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="space-y-2" x-data="{ showPassword: false }">
-              <label for="mobile-password" class="block text-sm font-semibold text-gray-700 flex items-center">
-                <i class="fas fa-lock text-purple-500 mr-2 icon-bounce"></i>Password
-              </label>
-              <div class="relative">
-                <input 
-                  :type="showPassword ? 'text' : 'password'" 
-                  id="mobile-password" 
-                  name="password" 
-                  x-model="form.password"
-                  placeholder="Masukkan password" 
-                  class="w-full px-4 py-4 bg-white/80 border-2 border-gray-200 rounded-2xl focus:border-purple-500 focus:outline-none interactive-input text-gray-700 placeholder-gray-400 font-medium shadow-sm focus-ring"
-                  required 
-                />
-                <button 
-                  type="button" 
-                  @click="showPassword = !showPassword"
-                  class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-purple-500 transition-colors icon-bounce"
-                >
-                  <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-                </button>
+              <div x-data="{ showPassword: false }">
+                <label for="mobile-password" class="block text-sm font-semibold text-gray-700 mb-2">
+                  <i class="fas fa-lock text-purple-500 mr-2"></i>Password
+                </label>
+                <div class="relative">
+                  <input 
+                    :type="showPassword ? 'text' : 'password'" 
+                    id="mobile-password" 
+                    name="password" 
+                    x-model="form.password"
+                    placeholder="Masukkan password" 
+                    class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:border-purple-500 focus:outline-none focus:bg-white transition-all duration-200 text-gray-700"
+                    required 
+                  />
+                  <button 
+                    type="button" 
+                    @click="showPassword = !showPassword"
+                    class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-purple-500 transition-colors"
+                  >
+                    <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                  </button>
+                </div>
               </div>
+
+              <input type="hidden" name="kategori" value="siswa">
+
+              <button 
+                type="submit" 
+                :disabled="loading"
+                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 active:scale-95 text-white font-semibold py-4 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center space-x-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none mt-6"
+              >
+                <div x-show="loading" class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                <i x-show="!loading" class="fas fa-rocket"></i>
+                <span x-text="loading ? 'Memproses...' : 'Masuk Sekarang'"></span>
+              </button>
+            </form>
+
+            <div x-show="showInstallButton" x-transition.opacity class="mt-4">
+              <button @click="installPWA()" class="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 active:scale-95 text-white font-semibold py-3 rounded-2xl shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
+                <i class="fas fa-download mr-2"></i> Instal Aplikasi
+              </button>
             </div>
 
-            <input type="hidden" name="kategori" value="siswa">
-
-            <button 
-              type="submit" 
-              :disabled="loading"
-              class="w-full btn-primary text-white font-bold py-4 rounded-2xl shadow-xl flex items-center justify-center space-x-3 disabled:opacity-70 disabled:cursor-not-allowed mt-8 relative z-10"
-            >
-              <div x-show="loading" class="loading-spinner"></div>
-              <i x-show="!loading" class="fas fa-rocket"></i>
-              <span x-text="loading ? 'Memproses...' : 'Masuk Sekarang'"></span>
-            </button>
-          </form>
-
-          <div x-show="showInstallButton" x-transition.opacity class="text-center mt-6">
-              <button @click="installPWA()" class="w-full btn-primary text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
-                  <i class="fas fa-download mr-2"></i> Instal Aplikasi SIGAM
-              </button>
-          </div>
-
-          <div class="mt-6 text-center">
-            <p class="text-gray-600 text-sm">
-              Belum punya akun? 
-              <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold transition-colors">Daftar di sini</a>
-            </p>
+            <div class="mt-4 text-center">
+              <p class="text-gray-600 text-sm">
+                Belum punya akun? 
+                <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold transition-colors">Daftar di sini</a>
+              </p>
+            </div>
           </div>
         </div>
 
-        <div class="text-center mt-8">
-          <p class="text-white/60 text-xs font-medium">© 2024 SIGAM. Dikembangkan dengan ❤️</p>
+        <!-- Footer -->
+        <div class="text-center pb-6">
+          <p class="text-white/60 text-xs">© 2024 SIGAM. Dikembangkan dengan ❤️</p>
         </div>
       </div>
     </div>
@@ -503,44 +305,49 @@
     <script>
       // Inisialisasi Notyf
       const notyf = new Notyf({
-        duration: 5000,
+        duration: 4000,
         position: { x: 'center', y: 'top' },
         dismissible: true,
         types: [
-          { type: 'success', background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', icon: { className: 'fas fa-check-circle', tagName: 'i', color: 'white' } },
-          { type: 'error', background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', icon: { className: 'fas fa-exclamation-triangle', tagName: 'i', color: 'white' } }
+          { 
+            type: 'success', 
+            background: 'linear-gradient(135deg, #10b981 0%, #3b82f6 100%)', 
+            icon: { className: 'fas fa-check-circle', tagName: 'i', color: 'white' } 
+          },
+          { 
+            type: 'error', 
+            background: 'linear-gradient(135deg, #ef4444 0%, #f59e0b 100%)', 
+            icon: { className: 'fas fa-exclamation-triangle', tagName: 'i', color: 'white' } 
+          }
         ]
       });
 
-      // Variabel global untuk menyimpan event beforeinstallprompt
+      // PWA Install
       let deferredPrompt;
-      let pwaInstallNotified = false; // Flag untuk memastikan notifikasi PWA hanya muncul sekali per sesi
 
-      // Listener untuk event beforeinstallprompt
-      window.addEventListener('beforeinstallprompt', (e) => {
-        // Mencegah mini-infobar default muncul di mobile
-        e.preventDefault();
-        // Simpan event sehingga bisa dipicu nanti
-        deferredPrompt = e;
-        console.log('beforeinstallprompt event fired! deferredPrompt saved.');
+      document.addEventListener('alpine:init', () => {
+        Alpine.store('appState', {
+          showInstallButton: false,
+        });
 
-        // Tampilkan notifikasi Notyf bahwa PWA bisa diinstal, jika belum pernah ditunjukkan
-        if (!pwaInstallNotified) {
-          notyf.success('Aplikasi SIGAM Dapat Di Install.');
-          pwaInstallNotified = true; // Set flag agar tidak muncul lagi
-        }
+        let pwaInstallNotified = false;
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          deferredPrompt = e;
+          
+          if (!pwaInstallNotified) {
+            notyf.success('Aplikasi SIGAM dapat diinstal!');
+            pwaInstallNotified = true;
+          }
+          
+          Alpine.store('appState').showInstallButton = true;
+        });
 
-        // Tampilkan tombol instal kustom di UI (via Alpine.js)
-        Alpine.store('loginApp').showInstallButton = true;
-      });
-
-      // Listener untuk event appinstalled
-      window.addEventListener('appinstalled', () => {
-        console.log('PWA was successfully installed!');
-        notyf.success('Aplikasi SIGAM berhasil diinstal!');
-        // Sembunyikan tombol instal setelah terinstal
-        Alpine.store('loginApp').showInstallButton = false;
-        deferredPrompt = null; // Hapus deferredPrompt karena sudah terpakai
+        window.addEventListener('appinstalled', () => {
+          notyf.success('Aplikasi SIGAM berhasil diinstal!');
+          Alpine.store('appState').showInstallButton = false;
+          deferredPrompt = null;
+        });
       });
 
       // Alpine.js main component
@@ -551,228 +358,71 @@
             nisn: '',
             password: '',
           },
-          showInstallButton: false, // State untuk mengontrol visibilitas tombol install
+          
+          get showInstallButton() {
+            return Alpine.store('appState')?.showInstallButton ?? false;
+          },
 
           init() {
-            // Tangani notifikasi dari URL (login gagal/berhasil)
             const urlParams = new URLSearchParams(window.location.search);
             const error = urlParams.get('error');
             const success = urlParams.get('success');
-            
+
             if (error) {
               notyf.error(decodeURIComponent(error));
-              // Opsional: Hapus parameter URL agar notifikasi tidak muncul lagi saat refresh
-              // history.replaceState(null, '', window.location.pathname);
             }
-            
             if (success) {
               notyf.success(decodeURIComponent(success));
-              // Opsional: Hapus parameter URL
-              // history.replaceState(null, '', window.location.pathname);
-            }
-
-            // Inisialisasi state tombol install berdasarkan deferredPrompt yang mungkin sudah ada
-            if (deferredPrompt && !pwaInstallNotified) { // Cek juga pwaInstallNotified agar notif tidak double saat init
-              this.showInstallButton = true;
-              notyf.success('Aplikasi SIGAM dapat diinstal! Klik tombol "Instal Aplikasi" di bawah untuk menambahkan ke perangkat Anda.');
-              pwaInstallNotified = true;
             }
           },
-          
+
           handleSubmit(event) {
-            console.log('--- DEBUG HANDLE SUBMIT ---');
-            console.log('Nilai form.nisn:', this.form.nisn, 'Length:', this.form.nisn.length);
-            console.log('Nilai form.password:', this.form.password, 'Length:', this.form.password.length);
-            
-            if (!this.form.nisn.trim()) {
+            if (!this.form.nisn.trim() || !this.form.password.trim()) {
               event.preventDefault();
-              notyf.error('NISN tidak boleh kosong!');
-              this.loading = false; // Pastikan loading direset jika validasi gagal
+              notyf.error('NISN dan Password tidak boleh kosong!');
               return;
             }
-            
-            if (!this.form.password.trim()) {
-              event.preventDefault();
-              notyf.error('Password tidak boleh kosong!');
-              this.loading = false; // Pastikan loading direset jika validasi gagal
-              return;
-            }
-            
             this.loading = true;
-            
             if (navigator.vibrate) {
               navigator.vibrate(50);
             }
-            // Form akan disubmit secara alami jika validasi lolos
           },
 
-          // Fungsi untuk memicu prompt instalasi PWA
           installPWA() {
-            console.log('Attempting to install PWA...');
             if (deferredPrompt) {
-              // Tampilkan prompt instalasi
               deferredPrompt.prompt();
-              // Tunggu respon pengguna terhadap prompt
               deferredPrompt.userChoice.then((choiceResult) => {
                 if (choiceResult.outcome === 'accepted') {
-                  console.log('User accepted the A2HS prompt');
-                  // notyf.success('Instalasi aplikasi dimulai...'); // Notifikasi 'berhasil diinstal' akan muncul dari appinstalled event
+                  console.log('User accepted the install prompt');
                 } else {
-                  console.log('User dismissed the A2HS prompt');
                   notyf.error('Instalasi aplikasi dibatalkan.');
                 }
-                // Bersihkan deferredPrompt karena hanya bisa digunakan sekali
                 deferredPrompt = null;
-                this.showInstallButton = false; // Sembunyikan tombol setelah prompt tampil (diterima/ditolak)
+                Alpine.store('appState').showInstallButton = false;
               });
             } else {
               notyf.error('Aplikasi sudah diinstal atau tidak dapat diinstal saat ini.');
-              console.log('deferredPrompt is null, cannot install PWA.');
             }
           },
         }
       }
-      
-      // Add touch gesture support
-      let touchStartX = 0;
-      let touchStartY = 0;
-      
-      document.addEventListener('touchstart', (e) => {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-      }, { passive: true });
-      
-      document.addEventListener('touchmove', (e) => {
-        if (!touchStartX || !touchStartY) return;
-        
-        let touchEndX = e.touches[0].clientX;
-        let touchEndY = e.touches[0].clientY;
-        
-        let diffX = touchStartX - touchEndX;
-        let diffY = touchStartY - touchEndY;
-        
-        // Add subtle parallax effect on mobile - KECEPATAN DIKURANGI UNTUK PERFORMA
-        if (window.innerWidth < 768) {
-          const parallaxElements = document.querySelectorAll('.float-animation');
-          parallaxElements.forEach(el => {
-            const speed = 0.05; // Kurangi kecepatan untuk mengurangi beban
-            el.style.transform = `translateX(${diffX * speed}px) translateY(${diffY * speed}px)`;
-          });
-        }
-      }, { passive: true });
-      
-      // Performance optimizations using requestIdleCallback
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(() => {
-          console.log('App optimized for performance');
-        });
-      }
-      
-      // Add device-specific optimizations
-      const userAgent = navigator.userAgent.toLowerCase();
-      const isIOS = /iphone|ipad|ipod/.test(userAgent);
-      const isAndroid = /android/.test(userAgent);
-      
-      if (isIOS) {
-        document.body.classList.add('ios-device');
-      }
-      
-      if (isAndroid) {
-        document.body.classList.add('android-device');
-        if (window.chrome) {
-          document.body.classList.add('chrome-browser');
-        }
-      }
-      
-      // Add connection quality detection - ubah logika agar lebih spesifik
-      if ('connection' in navigator) {
-        const connection = navigator.connection;
-        // Hanya tambahkan kelas jika koneksi lambat, agar tidak memengaruhi yang cepat
-        if (connection.effectiveType && (connection.effectiveType.includes('2g') || connection.effectiveType.includes('3g'))) {
-            document.body.classList.add('reduced-motion');
-        }
-      }
-      
-      // Add dark mode detection
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark-mode-preferred');
-      }
-      
-      // Add high contrast mode detection
-      if (window.matchMedia && window.matchMedia('(prefers-contrast: high)').matches) {
-        document.body.classList.add('high-contrast-mode');
-      }
-      
-      // Add reduced motion preference detection
-      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.body.classList.add('reduced-motion');
-      }
-      
-      // Add battery API support
-      if ('getBattery' in navigator) {
-        navigator.getBattery().then((battery) => {
-          // Hanya tambahkan kelas jika baterai benar-benar rendah dan tidak sedang mengisi daya
-          if (battery.level < 0.2 && !battery.charging) { 
-            document.body.classList.add('power-save-mode');
-          }
-        });
-      }
-      
-      // Add orientation change handling
-      window.addEventListener('orientationchange', () => {
-        setTimeout(() => {
-          document.body.style.display = 'none';
-          document.body.offsetHeight; 
-          document.body.style.display = '';
-        }, 100);
-      });
-      
-      // Add focus management for accessibility
-      document.addEventListener('DOMContentLoaded', () => {
-        const firstInput = document.querySelector('input[name="nisn"]');
-        if (firstInput && window.innerWidth > 768) {
-          firstInput.focus();
-        }
-      });
-      
-      // Add keyboard navigation support
+
+      // Keyboard navigation
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
           const form = e.target.closest('form');
           const inputs = Array.from(form.querySelectorAll('input[type="text"], input[type="password"]'));
           const currentIndex = inputs.indexOf(e.target);
-          
           if (currentIndex < inputs.length - 1) {
             e.preventDefault();
             inputs[currentIndex + 1].focus();
-          } else {
-            form.submit();
           }
         }
       });
-      
-      // Add error recovery with better error handling
-      window.addEventListener('error', (e) => {
-        console.error('Application error:', e.error);
-        if (e.error && e.error.message && !e.error.message.includes('notyf')) {
-          if (window.notyf) {
-            notyf.error('Terjadi kesalahan sistem. Silakan refresh halaman.');
-          }
-        }
-      });
-      
-      // Add online/offline detection
-      window.addEventListener('online', () => {
-        if (window.notyf) {
-          notyf.success('Koneksi internet kembali tersedia!');
-        }
-      });
-      
-      window.addEventListener('offline', () => {
-        if (window.notyf) {
-          notyf.error('Koneksi internet terputus. Beberapa fitur mungkin tidak berfungsi.');
-        }
-      });
+
+      // Online/offline detection
+      window.addEventListener('online', () => notyf?.success('Koneksi internet kembali tersedia!'));
+      window.addEventListener('offline', () => notyf?.error('Koneksi internet terputus.'));
     </script>
   </body>
 </html>

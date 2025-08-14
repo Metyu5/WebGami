@@ -37,8 +37,8 @@
                         <!-- <a href="#" data-page="../content/points.php" class="block px-4 py-2 text-sm rounded-xl hover:bg-menuHoverLight text-sidebarText hover:text-dark transition-all duration-200 spa-nav-link">
                             <i class="fas fa-star mr-2 text-base"></i> Points System
                         </a> -->
-                        <a href="#" data-page="../content/leaderboard.php" class="block px-4 py-2 text-sm rounded-xl hover:bg-menuHoverLight text-sidebarText hover:text-dark transition-all duration-200 spa-nav-link">
-                            <i class="fas fa-chart-line mr-2 text-base"></i> Leaderboard
+                        <a href="#" data-page="../content/history.php" class="block px-4 py-2 text-sm rounded-xl hover:bg-menuHoverLight text-sidebarText hover:text-dark transition-all duration-200 spa-nav-link">
+                            <i class="fas fa-chart-line mr-2 text-base"></i> History
                         </a>
                         <!-- <a href="#" data-page="../content/challenges.php" class="block px-4 py-2 text-sm rounded-xl hover:bg-menuHoverLight text-sidebarText hover:text-dark transition-all duration-200 spa-nav-link">
                             <i class="fas fa-flag mr-2 text-base"></i> Challenges
@@ -48,7 +48,7 @@
             </div>
 
 
-            <div class="mb-6">
+            <!-- <div class="mb-6">
                 <div id="reportsMenu" class="cursor-pointer sidebar-menu-item">
                     <div class="flex items-center justify-between px-4 py-3 text-sm rounded-xl hover:bg-menuHoverLight text-sidebarText hover:text-dark transition-all duration-200">
                         <div class="flex items-center">
@@ -62,7 +62,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div>
                 <h4 class="px-4 py-2 text-xs uppercase text-gray-500 tracking-widest font-semibold">Settings</h4>

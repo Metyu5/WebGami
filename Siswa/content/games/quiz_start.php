@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Racing Math Adventure - Simplified Edition</title>
-    
     <meta name="theme-color" content="#FF6B35">
     <meta name="description" content="Game Matematika Racing yang seru dan sederhana">
     <link href="../../../src/output.css" rel="stylesheet" onerror="console.log('Local CSS failed')">
-
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Notyf -->
     <link rel="stylesheet" href="../../../assets/vendor/notyf.min.css">
@@ -524,6 +522,7 @@
         notyf: null, 
          history: [],
             historyLoading: false,
+            
 
         init() {
             setTimeout(() => {

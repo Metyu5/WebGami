@@ -27,8 +27,6 @@ while ($row = $result->fetch_assoc()) {
 $koneksi->close();
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
