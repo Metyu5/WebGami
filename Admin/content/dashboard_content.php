@@ -1,16 +1,96 @@
+<?php
+require_once '../../config/koneksi.php';
+
+if ($koneksi->connect_error) {
+    die("Koneksi database gagal: " . $koneksi->connect_error);
+}
+
+$query_total_siswa = "SELECT COUNT(*) AS total_siswa FROM siswa";
+$result_total_siswa = $koneksi->query($query_total_siswa);
+$total_siswa = $result_total_siswa->fetch_assoc()['total_siswa'];
+
+$query_total_walikelas = "SELECT COUNT(*) AS total_walikelas FROM walikelas";
+$result_total_walikelas = $koneksi->query($query_total_walikelas);
+$total_walikelas = $result_total_walikelas->fetch_assoc()['total_walikelas'];
+
+$query_total_games = "SELECT COUNT(*) AS total_games FROM hasil_permainan";
+$result_total_games = $koneksi->query($query_total_games);
+$total_games = $result_total_games->fetch_assoc()['total_games'];
+
+$query_total_points = "SELECT SUM(skor) AS total_skor FROM hasil_permainan";
+$result_total_points = $koneksi->query($query_total_points);
+$total_skor_data = $result_total_points->fetch_assoc();
+$total_skor = is_null($total_skor_data['total_skor']) ? 0 : $total_skor_data['total_skor'];
+
+$leaderboard = [];
+$query_leaderboard = "
+    SELECT 
+        s.username AS nama_siswa,
+        s.kelas AS kelas_siswa,
+        SUM(hp.skor) AS total_skor
+    FROM hasil_permainan hp
+    JOIN siswa s ON hp.siswa_id = s.siswaId
+    GROUP BY s.siswaId, s.username, s.kelas
+    ORDER BY total_skor DESC
+";
+$result_leaderboard = $koneksi->query($query_leaderboard);
+if ($result_leaderboard) {
+    while ($row = $result_leaderboard->fetch_assoc()) {
+        $leaderboard[] = $row;
+    }
+} else {
+    error_log("Error Leaderboard Query: " . $koneksi->error);
+}
+
+$jumlah_siswa_leaderboard = count($leaderboard);
+
+$query_avg_skor_siswa = "
+    SELECT 
+        s.username AS nama_siswa,
+        AVG(hp.skor) AS rata_rata_skor
+    FROM hasil_permainan hp
+    JOIN siswa s ON hp.siswa_id = s.siswaId
+    GROUP BY s.siswaId, s.username
+    ORDER BY rata_rata_skor DESC
+    LIMIT 10
+";
+$result_avg_skor_siswa = $koneksi->query($query_avg_skor_siswa);
+$data_avg_skor = [];
+while ($row = $result_avg_skor_siswa->fetch_assoc()) {
+    $data_avg_skor[] = $row;
+}
+
+$query_games_per_hari = "
+    SELECT 
+        DATE(tanggal_main) AS tanggal,
+        COUNT(*) AS total_games
+    FROM hasil_permainan
+    GROUP BY tanggal
+    ORDER BY tanggal ASC
+    LIMIT 30
+";
+$result_games_per_hari = $koneksi->query($query_games_per_hari);
+$data_games_per_hari = [];
+while ($row = $result_games_per_hari->fetch_assoc()) {
+    $data_games_per_hari[] = $row;
+}
+
+$koneksi->close();
+?>
+
 <div class="mb-6">
     <h1 class="text-3xl font-bold text-dark">Gamification Administrator</h1>
     <p class="text-gray-600 mt-2">Monitor student engagement and achievements</p>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1">
         <div class="flex justify-between items-start">
             <div>
-                <h3 class="text-gray-500 text-sm font-medium">Active Students</h3>
-                <p class="text-3xl font-bold text-dark mt-1">1,248</p>
+                <h3 class="text-gray-500 text-sm font-medium">Total Siswa</h3>
+                <p class="text-3xl font-bold text-dark mt-1"><?= htmlspecialchars($total_siswa) ?></p>
                 <p class="text-green-500 text-xs mt-2 font-semibold">
-                    <i class="fas fa-arrow-up mr-1"></i> 12% from last month
+                    <i class="fas fa-arrow-up mr-1"></i> Jumlah Siswa Terdaftar
                 </p>
             </div>
             <div class="bg-primary/80 text-white p-4 rounded-lg shadow-md">
@@ -18,14 +98,27 @@
             </div>
         </div>
     </div>
-
     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1">
         <div class="flex justify-between items-start">
             <div>
-                <h3 class="text-gray-500 text-sm font-medium">Badges Awarded</h3>
-                <p class="text-3xl font-bold text-dark mt-1">3,567</p>
+                <h3 class="text-gray-500 text-sm font-medium">Total Walikelas</h3>
+                <p class="text-3xl font-bold text-dark mt-1"><?= htmlspecialchars($total_walikelas) ?></p>
                 <p class="text-green-500 text-xs mt-2 font-semibold">
-                    <i class="fas fa-arrow-up mr-1"></i> 24% from last month
+                    Jumlah Walikelas Terdaftar
+                </p>
+            </div>
+            <div class="bg-teal-500/80 text-white p-4 rounded-lg shadow-md">
+                <i class="fas fa-user-tie text-2xl"></i>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1">
+        <div class="flex justify-between items-start">
+            <div>
+                <h3 class="text-gray-500 text-sm font-medium">Total Permainan</h3>
+                <p class="text-3xl font-bold text-dark mt-1"><?= htmlspecialchars($total_games) ?></p>
+                <p class="text-green-500 text-xs mt-2 font-semibold">
+                    <i class="fas fa-arrow-up mr-1"></i> Yang Di Selesaikan
                 </p>
             </div>
             <div class="bg-secondary/80 text-white p-4 rounded-lg shadow-md">
@@ -33,14 +126,13 @@
             </div>
         </div>
     </div>
-
     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1">
         <div class="flex justify-between items-start">
             <div>
-                <h3 class="text-gray-500 text-sm font-medium">Leaderboard</h3>
-                <p class="text-3xl font-bold text-dark mt-1">Top 10%</p>
-                <p class="text-red-500 text-xs mt-2 font-semibold">
-                    <i class="fas fa-arrow-down mr-1"></i> 3% from last week
+                <h3 class="text-gray-500 text-sm font-medium">Siswa Peringkat</h3>
+                <p class="text-3xl font-bold text-dark mt-1"><?= htmlspecialchars($jumlah_siswa_leaderboard) ?></p>
+                <p class="text-green-500 text-xs mt-2 font-semibold">
+                    Berdasarkan Total Skor
                 </p>
             </div>
             <div class="bg-accent/80 text-white p-4 rounded-lg shadow-md">
@@ -48,14 +140,13 @@
             </div>
         </div>
     </div>
-
     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1">
         <div class="flex justify-between items-start">
             <div>
-                <h3 class="text-gray-500 text-sm font-medium">Total Points</h3>
-                <p class="text-3xl font-bold text-dark mt-1">124,890</p>
+                <h3 class="text-gray-500 text-sm font-medium">Total Skor</h3>
+                <p class="text-3xl font-bold text-dark mt-1"><?= htmlspecialchars($total_skor) ?></p>
                 <p class="text-green-500 text-xs mt-2 font-semibold">
-                    <i class="fas fa-arrow-up mr-1"></i> 18% from last month
+                    <i class="fas fa-arrow-up mr-1"></i> Keseluruhan
                 </p>
             </div>
             <div class="bg-yellow-500/80 text-white p-4 rounded-lg shadow-md">
@@ -70,7 +161,6 @@
         <h2 class="text-xl font-bold text-dark">
             <i class="fas fa-medal text-primary mr-2"></i> Recent Badges Awarded
         </h2>
-        <a href="#" class="text-sm text-primary hover:underline font-medium">View All</a>
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
         <div class="text-center group cursor-pointer transform hover:scale-105 transition-transform duration-200">
@@ -112,108 +202,80 @@
     </div>
 </div>
 
-<div class="bg-white rounded-lg shadow-md p-6">
+<div class="bg-white rounded-lg shadow-md p-6 mb-8">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold text-dark">
-            <i class="fas fa-chart-line text-primary mr-2"></i> Current Leaderboard
+            <i class="fas fa-chart-bar text-secondary mr-2"></i> Visualisasi Data Permainan
         </h2>
-        <a href="#" class="text-sm text-primary hover:underline font-medium">View All</a>
     </div>
-    <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rank</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Points</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Badges</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="bg-yellow-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-md">1</span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <img src="../assets/images/logo-tutwuri-SD.png" alt="Student" class="w-9 h-9 rounded-full border-2 border-primary mr-3">
-                            <span class="font-medium text-dark">Alex Johnson</span>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-700 font-normal">Computer Science</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">4,890</span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-700 font-normal">12</td>
-                </tr>
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="bg-gray-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-md">2</span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <img src="../assets/images/logo-tutwuri-SD.png"  alt="Student" class="w-9 h-9 rounded-full border-2 border-primary mr-3">
-                            <span class="font-medium text-dark">Maria Garcia</span>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-700 font-normal">Mathematics</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">4,520</span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-700 font-normal">10</td>
-                </tr>
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="bg-amber-700 text-white text-sm font-bold px-3 py-1 rounded-full shadow-md">3</span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <img src="../assets/images/logo-tutwuri-SD.png"  alt="Student" class="w-9 h-9 rounded-full border-2 border-primary mr-3">
-                            <span class="font-medium text-dark">James Wilson</span>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-700 font-normal">Physics</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">4,310</span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-700 font-normal">9</td>
-                </tr>
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="bg-primary text-white text-sm font-bold px-3 py-1 rounded-full shadow-md">4</span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <img src="../assets/images/logo-tutwuri-SD.png"  alt="Student" class="w-9 h-9 rounded-full border-2 border-primary mr-3">
-                            <span class="font-medium text-dark">Sarah Lee</span>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-700 font-normal">Biology</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">4,150</span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-700 font-normal">8</td>
-                </tr>
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="bg-primary text-white text-sm font-bold px-3 py-1 rounded-full shadow-md">5</span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <img src="../assets/images/logo-tutwuri-SD.png"  alt="Student" class="w-9 h-9 rounded-full border-2 border-primary mr-3">
-                            <span class="font-medium text-dark">David Kim</span>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-700 font-normal">Chemistry</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">3,980</span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="text-gray-700 font-normal">7</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+            <h3 class="text-lg font-semibold text-dark mb-2">Top 10 Siswa Berdasarkan Rata-rata Skor</h3>
+            <canvas id="avgSkorChart"></canvas>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+            <h3 class="text-lg font-semibold text-dark mb-2">Jumlah Permainan Selesai per Hari</h3>
+            <canvas id="gamesPerHariChart"></canvas>
+        </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const avgSkorData = <?= json_encode($data_avg_skor) ?>;
+    const gamesPerHariData = <?= json_encode($data_games_per_hari) ?>;
+
+    const avgSkorLabels = avgSkorData.map(d => d.nama_siswa);
+    const avgSkorValues = avgSkorData.map(d => d.rata_rata_skor);
+
+    const avgSkorCtx = document.getElementById('avgSkorChart').getContext('2d');
+    new Chart(avgSkorCtx, {
+        type: 'bar',
+        data: {
+            labels: avgSkorLabels,
+            datasets: [{
+                label: 'Rata-rata Skor',
+                data: avgSkorValues,
+                backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    const gamesPerHariLabels = gamesPerHariData.map(d => d.tanggal);
+    const gamesPerHariValues = gamesPerHariData.map(d => d.total_games);
+    
+    const gamesPerHariCtx = document.getElementById('gamesPerHariChart').getContext('2d');
+    new Chart(gamesPerHariCtx, {
+        type: 'line',
+        data: {
+            labels: gamesPerHariLabels,
+            datasets: [{
+                label: 'Jumlah Permainan',
+                data: gamesPerHariValues,
+                borderColor: 'rgba(16, 185, 129, 1)',
+                backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

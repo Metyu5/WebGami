@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 07, 2025 at 03:41 PM
+-- Generation Time: Aug 16, 2025 at 05:51 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -42,7 +42,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`adminId`, `username`, `email`, `password`, `foto`, `tanggal_dibuat`, `kategori`) VALUES
-(1, 'Rahmawati Detu', 'admin@gmail.com', 'admin123', 'upload/profile/admin_688b141ec7730.jpeg', '2025-07-29 00:00:00', 'admin');
+(1, 'Rahmawati', 'admin@gmail.com', 'admin123', 'upload/profile/admin_688b141ec7730.jpeg', '2025-07-29 00:00:00', 'admin');
 
 -- --------------------------------------------------------
 
@@ -88,7 +88,42 @@ INSERT INTO `detail_soal` (`detail_id`, `soal_id`, `pertanyaan`, `jawaban`, `sko
 (29, 10, '15 + 15', '30', 8),
 (30, 10, '10 + 2', '12', 5),
 (31, 10, '10 + 10', '20', 6),
-(32, 9, '11 + 11', '22', 11);
+(33, 9, '11 + 11', '22', 11),
+(34, 11, '1 x 1', '1', 5),
+(35, 11, '1 x 2', '2', 5),
+(36, 11, '1 x 3', '3', 5),
+(37, 11, '1 x 4', '4', 5),
+(38, 11, '1 x 5', '5', 5),
+(39, 11, '1 x 6', '6', 5),
+(40, 11, '1 x 7', '7', 5),
+(41, 11, '1 x 8', '8', 5),
+(42, 11, '1 x 10', '10', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hasil_permainan`
+--
+
+CREATE TABLE `hasil_permainan` (
+  `id` int UNSIGNED NOT NULL,
+  `siswa_id` int DEFAULT NULL,
+  `soal_id` int UNSIGNED DEFAULT NULL,
+  `skor` int UNSIGNED NOT NULL,
+  `jawaban_benar` int UNSIGNED NOT NULL,
+  `total_pertanyaan` int UNSIGNED NOT NULL,
+  `tingkat_kesulitan` varchar(50) NOT NULL,
+  `tanggal_main` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `hasil_permainan`
+--
+
+INSERT INTO `hasil_permainan` (`id`, `siswa_id`, `soal_id`, `skor`, `jawaban_benar`, `total_pertanyaan`, `tingkat_kesulitan`, `tanggal_main`) VALUES
+(27, 42, 11, 100, 9, 9, 'easy', '2025-08-14 12:25:39'),
+(29, 42, 9, 14, 1, 1, 'easy', '2025-08-14 13:39:27'),
+(30, 40, 11, 100, 9, 9, 'easy', '2025-08-14 13:45:19');
 
 -- --------------------------------------------------------
 
@@ -148,8 +183,9 @@ INSERT INTO `soal` (`soal_id`, `nama`, `kategori`, `kelas`, `tingkat`) VALUES
 (6, 'Soal Perjumlahan Kelas 1', 'Perjumlahan', 2, 'Mudah'),
 (7, 'Soal Perjumlahan kelas 2', 'Perjumlahan', 4, 'Sulit'),
 (8, 'Soal Perkalian Kelas 5', 'Perkalian', 5, 'Mudah'),
-(9, 'Soal penjumlahan kelas 3', 'Penjumlahan', 3, 'Sulit'),
-(10, 'Soal Penjumlahan kelas 3', 'Penjumlahan', 3, 'Mudah');
+(9, 'Soal penjumlahan kelas 3', 'Penjumlahan', 3, 'Sedang'),
+(10, 'Soal Penjumlahan kelas 3', 'Penjumlahan', 3, 'Mudah'),
+(11, 'Soal Perkalian Kelas 3', 'Perkalian', 3, 'Mudah');
 
 -- --------------------------------------------------------
 
@@ -202,6 +238,14 @@ ALTER TABLE `detail_soal`
   ADD KEY `idx_soal_id` (`soal_id`);
 
 --
+-- Indexes for table `hasil_permainan`
+--
+ALTER TABLE `hasil_permainan`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `siswa_id` (`siswa_id`),
+  ADD KEY `fk_soal_id` (`soal_id`);
+
+--
 -- Indexes for table `siswa`
 --
 ALTER TABLE `siswa`
@@ -237,7 +281,13 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `detail_soal`
 --
 ALTER TABLE `detail_soal`
-  MODIFY `detail_id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `detail_id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+
+--
+-- AUTO_INCREMENT for table `hasil_permainan`
+--
+ALTER TABLE `hasil_permainan`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `siswa`
@@ -249,7 +299,7 @@ ALTER TABLE `siswa`
 -- AUTO_INCREMENT for table `soal`
 --
 ALTER TABLE `soal`
-  MODIFY `soal_id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `soal_id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `walikelas`
@@ -266,6 +316,13 @@ ALTER TABLE `walikelas`
 --
 ALTER TABLE `detail_soal`
   ADD CONSTRAINT `fk_detail_soal_soal` FOREIGN KEY (`soal_id`) REFERENCES `soal` (`soal_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `hasil_permainan`
+--
+ALTER TABLE `hasil_permainan`
+  ADD CONSTRAINT `fk_soal_id` FOREIGN KEY (`soal_id`) REFERENCES `soal` (`soal_id`),
+  ADD CONSTRAINT `hasil_permainan_ibfk_1` FOREIGN KEY (`siswa_id`) REFERENCES `siswa` (`siswaId`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

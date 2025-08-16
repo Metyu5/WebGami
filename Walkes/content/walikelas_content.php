@@ -127,7 +127,6 @@ $koneksi->close();
         <h2 class="text-xl font-bold text-dark">
             <i class="fas fa-medal text-primary mr-2"></i> Recent Badges Awarded
         </h2>
-        <a href="#" class="text-sm text-primary hover:underline font-medium">View All</a>
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
         <div class="text-center group cursor-pointer transform hover:scale-105 transition-transform duration-200">
@@ -174,7 +173,6 @@ $koneksi->close();
         <h2 class="text-xl font-bold text-dark">
             <i class="fas fa-chart-line text-primary mr-2"></i> Current Leaderboard
         </h2>
-        <a href="#" class="text-sm text-primary hover:underline font-medium">View All</a>
     </div>
     <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">

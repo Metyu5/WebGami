@@ -8,16 +8,12 @@
     <meta name="description" content="Game Matematika Racing yang seru dan sederhana">
     <link href="../../../src/output.css" rel="stylesheet" onerror="console.log('Local CSS failed')">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Notyf -->
     <link rel="stylesheet" href="../../../assets/vendor/notyf.min.css">
     <script defer src="../../../assets/vendor/notyf.min.js"></script>
-    <!-- Alpine.js -->
     <script defer src="../../../assets/vendor/alpine.min.js"></script>
-    <!-- Phaser -->
     <script defer src="../../../assets/vendor/phaser.min.js"></script>
     <style>
         * { 
-            margin: 0; 
             padding: 0; 
             box-sizing: border-box; 
         }
@@ -154,7 +150,7 @@
             }
             
             .text-6xl {
-                font-size: 2.5rem !important;
+                font-size: 1.1rem !important;
             }
             
             .text-7xl {
@@ -217,7 +213,7 @@
         <div class="text-center">
             <div class="car-bounce mb-8">
                 <div class="w-32 h-32 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl flex items-center justify-center mx-auto shadow-2xl relative">
-                    <span class="text-6xl">🏎️</span>
+                    <span class="text-2xl">🏎️</span>
                     <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
                         <div class="road-lines w-16 h-2 bg-gray-700 rounded"></div>
                     </div>
@@ -474,10 +470,10 @@
                                 class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-5 md:py-4 px-4 md:px-6 rounded-xl racing-font transform transition hover:scale-105 text-sm md:text-base">
                             🔄 MULAI LAGI
                         </button>
-                         <button @click="saveResults()" 
-                            :disabled="isSaving"
+                        <button id="save-button" @click="saveResults()" 
+                            :disabled="isSaving || resultsSaved"
                             class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-5 md:py-4 px-4 md:px-6 rounded-xl racing-font transform transition hover:scale-105 text-sm md:text-base">
-                        💾 SIMPAN DATA <span x-text="isSaving ? 'Menyimpan...' : 'SIMPAN'"></span>
+                            💾 <span x-text="isSaving ? 'Menyimpan...' : (resultsSaved ? 'DATA TERSIMPAN' : 'SIMPAN DATA')"></span>
                         </button>
                         
                         <button @click="exitToMenu()" 
@@ -490,8 +486,8 @@
         </div>
     </div>
 
-    <script>
-       function simplifiedRacingGame() {
+ <script>
+function simplifiedRacingGame() {
     return {
         loading: true,
         screen: 'menu',
@@ -503,7 +499,7 @@
         correctAnswers: 0,
         totalQuestions: 0,
         timeLeft: 10, 
-
+        
         showPauseModal: false,
         showGameOverModal: false,
         raceWon: false,
@@ -519,18 +515,62 @@
         siswaId: null,
         questionCount: 0,
         isSaving: false, 
+        resultsSaved: false,
         notyf: null, 
-         history: [],
-            historyLoading: false,
-            
+        history: [],
+        historyLoading: false,
 
         init() {
             setTimeout(() => {
                 this.loading = false;
             }, 2500);
+            
+            // Perbaikan konfigurasi Notyf
             this.notyf = new Notyf({
-                duration: 4000,
-                position: { x: 'right', y: 'top' }
+                duration: 3000, // 3 detik
+                position: { x: 'right', y: 'top' },
+                dismissible: true, // Bisa ditutup manual
+                ripple: true,
+                types: [
+                    {
+                        type: 'success',
+                        background: '#4CAF50',
+                        duration: 3000,
+                        dismissible: true
+                    },
+                    {
+                        type: 'error', 
+                        background: '#f44336',
+                        duration: 3000,
+                        dismissible: true
+                    }
+                ]
+            });
+
+            // Setup event listeners untuk auto-cleanup
+            this.setupCleanupEvents();
+        },
+
+        // Setup Event Listeners untuk Auto-Cleanup
+        setupCleanupEvents() {
+            // Cleanup saat window/tab ditutup
+            window.addEventListener('beforeunload', () => {
+                this.destroy();
+            });
+
+            // Cleanup saat user navigate away
+            window.addEventListener('pagehide', () => {
+                this.destroy();
+            });
+
+            // Cleanup saat visibility berubah (tab switch, minimize, dll)
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'hidden') {
+                    // Optional: pause game atau cleanup ringan
+                    if (this.screen === 'race' && !this.showPauseModal) {
+                        this.pauseRace();
+                    }
+                }
             });
         },
 
@@ -545,43 +585,43 @@
 
         showHistory() {
             this.screen = 'history';
+            this.fetchHistory();
         },
-        async fetchHistory() {
-                this.historyLoading = true;
-                this.history = [];
-                try {
-                    const response = await fetch('../API/get_history.php');
-                    const data = await response.json();
-                    
-                    if (response.ok && data.success) {
-                        this.history = data.history.map(item => {
-                            // Hitung kemenangan di sisi client
-                            const akurasi = item.jawaban_benar / item.total_pertanyaan;
-                            const menang = akurasi >= 0.7;
 
-                            return {
-                                ...item,
-                                menang: menang ? 'Menang' : 'Kalah',
-                                tanggal: new Date(item.tanggal_main).toLocaleDateString('id-ID', {
-                                    year: 'numeric', month: 'short', day: 'numeric'
-                                })
-                            };
-                        });
-                    } else {
-                        throw new Error(data.message || 'Gagal mengambil riwayat.');
-                    }
-                } catch (error) {
-                    console.error('Error fetching history:', error);
-                    this.notyf.error(`Terjadi kesalahan: ${error.message}`);
-                } finally {
-                    this.historyLoading = false;
+        async fetchHistory() {
+            this.historyLoading = true;
+            this.history = [];
+            try {
+                const response = await fetch('../API/get_history.php');
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    this.history = data.history.map(item => {
+                        // Hitung kemenangan di sisi client
+                        const akurasi = item.jawaban_benar / item.total_pertanyaan;
+                        const menang = akurasi >= 0.7;
+
+                        return {
+                            ...item,
+                            menang: menang ? 'Menang' : 'Kalah',
+                            tanggal: new Date(item.tanggal_main).toLocaleDateString('id-ID', {
+                                year: 'numeric', month: 'short', day: 'numeric'
+                            })
+                        };
+                    });
+                } else {
+                    throw new Error(data.message || 'Gagal mengambil riwayat.');
                 }
-            },
-            
-            showHistory() {
-                this.screen = 'history';
-                this.fetchHistory();
-            },
+            } catch (error) {
+                console.error('Error fetching history:', error);
+                if (this.notyf) {
+                    this.notyf.dismissAll();
+                    this.notyf.error(`Terjadi kesalahan: ${error.message}`);
+                }
+            } finally {
+                this.historyLoading = false;
+            }
+        },
 
         async loadQuestions() {
             const loadingOverlay = document.getElementById('question-loading');
@@ -675,6 +715,11 @@
             this.showGameOverModal = false;
             this.isAnswering = false;
             this.gameOverReason = '';
+            this.resultsSaved = false;
+            
+            if (this.notyf) {
+                this.notyf.dismissAll();
+            }
 
             const urlParams = new URLSearchParams(window.location.search);
             const soalId = urlParams.get('soal_id');
@@ -705,27 +750,46 @@
         restartRace() {
             this.showPauseModal = false;
             this.showGameOverModal = false;
+            
+            // Cleanup notifikasi saat restart
+            if (this.notyf) {
+                this.notyf.dismissAll();
+            }
+            
             this.startRace();
         },
 
         exitRace() {
             this.showPauseModal = false;
             this.screen = 'menu';
-            if (this.gameTimer) {
-                clearInterval(this.gameTimer);
+            
+            // Cleanup notifikasi dan game resources
+            if (this.notyf) {
+                this.notyf.dismissAll();
             }
-            if (this.phaserGame) {
-                this.phaserGame.destroy(true);
-                this.phaserGame = null;
-            }
+            
+            this.cleanupGameResources();
         },
 
         exitToMenu() {
             this.showGameOverModal = false;
             this.screen = 'menu';
+            
+            // Cleanup notifikasi saat keluar ke menu
+            if (this.notyf) {
+                this.notyf.dismissAll();
+            }
+            
+            this.cleanupGameResources();
+        },
+
+        // Helper Method untuk Cleanup Game Resources
+        cleanupGameResources() {
             if (this.gameTimer) {
                 clearInterval(this.gameTimer);
+                this.gameTimer = null;
             }
+            
             if (this.phaserGame) {
                 this.phaserGame.destroy(true);
                 this.phaserGame = null;
@@ -858,10 +922,16 @@
             }
         },
 
+        // Perbaikan saveResults dengan proper Notyf handling
         async saveResults() {
-            if (this.isSaving) return;
+            if (this.isSaving || this.resultsSaved) return;
             this.isSaving = true;
-            
+
+            // Pastikan tidak ada notifikasi lama yang masih tampil
+            if (this.notyf) {
+                this.notyf.dismissAll();
+            }
+
             try {
                 const response = await fetch('../API/save_game.php', {
                     method: 'POST',
@@ -879,14 +949,36 @@
 
                 const result = await response.json();
                 
-                if (response.ok) {
-                    this.notyf.success('🏁 Data balapan berhasil disimpan!');
+                if (response.ok && result.success) {
+                    // Tampilkan notifikasi sukses dengan durasi tepat 3 detik
+                    const notification = this.notyf.success('🏁 Data balapan berhasil disimpan!');
+                    
+                    // Set flag bahwa hasil sudah tersimpan
+                    this.resultsSaved = true;
+                    
+                    // OPTIONAL: Auto-dismiss setelah 3 detik untuk memastikan
+                    setTimeout(() => {
+                        if (this.notyf) {
+                            this.notyf.dismiss(notification);
+                        }
+                    }, 3000);
+                    
                 } else {
                     throw new Error(result.message || 'Gagal menyimpan data.');
                 }
             } catch (error) {
                 console.error('Error saving data:', error);
-                this.notyf.error(`Terjadi kesalahan: ${error.message}`);
+                if (this.notyf) {
+                    // Tampilkan error dengan durasi 3 detik
+                    const errorNotification = this.notyf.error(`Terjadi kesalahan: ${error.message}`);
+                    
+                    // OPTIONAL: Auto-dismiss error setelah 3 detik
+                    setTimeout(() => {
+                        if (this.notyf) {
+                            this.notyf.dismiss(errorNotification);
+                        }
+                    }, 3000);
+                }
             } finally {
                 this.isSaving = false;
             }
@@ -967,6 +1059,7 @@
                 height: Math.min(500, window.innerHeight - 150),
                 parent: 'phaser-game',
                 backgroundColor: '#2C5530',
+                pixelArt: true,
                 physics: {
                     default: 'arcade',
                     arcade: {
@@ -990,11 +1083,12 @@
             let playerCar, opponentCars = [], roadLines = [], trees = [];
             let particles, explosionEmitter;
             let screenShake = { x: 0, y: 0, intensity: 0 };
-            let gameSpeed = 4; // Slower game speed
-            let carSpeed = 8;
+            let gameSpeed = 450; // Kecepatan game dalam pixel/detik (lebih cepat)
+            let carSpeed = 500; // Kecepatan mobil pemain dalam pixel/detik
             let playerCarX = config.width / 2;
             let collisionCooldown = 0;
-            let carSpawnTimer = 0; // Timer for spawning cars
+            let carSpawnTimer = 0; // Timer untuk memunculkan mobil
+            let carSpawnFrequency = 120; // Frekuensi spawn mobil (lebih sering)
 
             function preload() {
                 // Create player car sprite
@@ -1159,12 +1253,12 @@
                 });
 
                 // Update function for car movement
-                this.updateCarMovement = function() {
+                this.updateCarMovement = function(delta) {
                     // Keyboard controls
                     if (cursors.left.isDown || wasd.A.isDown) {
-                        playerCarX -= carSpeed;
+                        playerCarX -= carSpeed * (delta / 1000);
                     } else if (cursors.right.isDown || wasd.D.isDown) {
-                        playerCarX += carSpeed;
+                        playerCarX += carSpeed * (delta / 1000);
                     }
 
                     // Constrain player car to road
@@ -1179,11 +1273,11 @@
 
                 // Function to spawn new opponent car
                 this.spawnOpponentCar = function() {
-                    // Only spawn if less than 2 cars on screen
+                    // Hanya spawn jika kurang dari 2 mobil di layar
                     if (opponentCars.length < 2) {
                         const lanes = [config.width * 0.3, config.width * 0.5, config.width * 0.7];
                         const availableLanes = lanes.filter(lane => {
-                            // Check if lane is occupied by existing cars
+                            // Cek apakah jalur sudah ditempati oleh mobil lain
                             return !opponentCars.some(car => Math.abs(car.x - lane) < 50 && car.y > -200);
                         });
                         
@@ -1192,7 +1286,7 @@
                             const carIndex = Math.floor(Math.random() * 3);
                             const car = scene.physics.add.image(lane, -100, `opponent-car-${carIndex}`);
                             car.body.setSize(30, 60, 5, 10);
-                            car.setData('speed', 1.5 + Math.random() * 0.5); // Slower speed: 0.8-1.2
+                            car.setData('speed', 250 + Math.random() * 100); // Kecepatan lawan lebih tinggi
                             opponentCars.push(car);
                             
                             // Set up collision detection for this car
@@ -1230,7 +1324,7 @@
                 questionBg.strokeRoundedRect(config.width * 0.05, 20, config.width * 0.9, 80, 15);
 
                 questionText = this.add.text(config.width / 2, 60, '', {
-                    fontSize: Math.min(32, config.width / 25) + 'px',
+                    fontSize: '32px',
                     fill: '#FFFFFF',
                     fontFamily: 'Orbitron',
                     align: 'center'
@@ -1393,22 +1487,24 @@
                 app.startQuestionTimer();
             }
 
-            function update() {
+            function update(time, delta) {
                 if (collisionCooldown > 0) {
                     collisionCooldown--;
                 }
 
-                this.updateCarMovement();
+                this.updateCarMovement(delta);
 
                 carSpawnTimer++;
-                if (carSpawnTimer >= 180 + Math.random() * 240) { // 5-10 seconds
+                if (carSpawnTimer >= carSpawnFrequency) { 
                     this.spawnOpponentCar();
                     carSpawnTimer = 0;
                 }
 
+                const deltaInSeconds = delta / 1000;
+
                 // Animate road elements
                 roadLines.forEach(line => {
-                    line.y += gameSpeed;
+                    line.y += gameSpeed * deltaInSeconds;
                     if (line.y > config.height + 30) {
                         line.y = -30;
                     }
@@ -1416,7 +1512,7 @@
 
                 // Animate trees
                 trees.forEach(tree => {
-                    tree.y += gameSpeed * 0.8;
+                    tree.y += gameSpeed * deltaInSeconds * 0.8;
                     if (tree.y > config.height + 40) {
                         tree.y = -40;
                     }
@@ -1424,7 +1520,7 @@
 
                 // Animate opponent cars (SIMPLIFIED - slower movement)
                 opponentCars.forEach((car, index) => {
-                    const speed = car.getData('speed') * gameSpeed;
+                    const speed = car.getData('speed') * deltaInSeconds;
                     car.y += speed;
                     
                     // Remove car when off screen
@@ -1450,39 +1546,87 @@
             }
 
             this.phaserGame = new Phaser.Game(config);
+        },
+
+        // MAIN DESTROY METHOD - Cleanup saat component destroyed
+        destroy() {
+            console.log('🧹 Cleaning up Racing Game component...');
+            
+            // Cleanup Notyf
+            if (this.notyf) {
+                this.notyf.dismissAll();
+                this.notyf = null;
+            }
+            
+            // Cleanup game resources
+            this.cleanupGameResources();
+            
+            // Cleanup other timers jika ada
+            if (this.questionTimer) {
+                clearTimeout(this.questionTimer);
+                this.questionTimer = null;
+            }
+            
+            // Reset state
+            this.loading = false;
+            this.screen = 'menu';
+            this.showPauseModal = false;
+            this.showGameOverModal = false;
+            this.resultsSaved = false;
+            this.isSaving = false;
+            
+            console.log('✅ Racing Game component cleaned up');
         }
     }
 }   
-        // Initialize app
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                const loadingScreen = document.getElementById('loading');
-                if (loadingScreen) {
-                    loadingScreen.style.display = 'none';
-                }
-            }, 2500);
-        });
 
-        // Prevent zoom and context menu on mobile
-        document.addEventListener('gesturestart', function (e) {
-            e.preventDefault();
-        });
+// Initialize app
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        const loadingScreen = document.getElementById('loading');
+        if (loadingScreen) {
+            loadingScreen.style.display = 'none';
+        }
+    }, 2500);
+});
 
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
+// Global cleanup handler untuk memastikan cleanup
+window.addEventListener('beforeunload', function() {
+    // Jika ada instance global game yang perlu di-cleanup
+    if (window.currentGameInstance && typeof window.currentGameInstance.destroy === 'function') {
+        window.currentGameInstance.destroy();
+    }
+});
 
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            if (window.game && window.game.scale) {
-                window.game.scale.refresh();
-            }
-        });
+// Untuk debugging: Simpan reference ke game instance
+document.addEventListener('DOMContentLoaded', function() {
+    // Jika perlu akses global ke game instance
+    const gameElement = document.querySelector('[x-data="simplifiedRacingGame()"]');
+    if (gameElement && gameElement._x_dataStack) {
+        window.currentGameInstance = gameElement._x_dataStack[0];
+    }
+});
 
-        // Prevent scrolling on mobile
-        document.addEventListener('touchmove', function(e) {
-            e.preventDefault();
-        }, { passive: false });
-    </script>
+// Prevent zoom and context menu on mobile
+document.addEventListener('gesturestart', function (e) {
+    e.preventDefault();
+});
+
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+// Handle window resize
+window.addEventListener('resize', function() {
+    if (window.game && window.game.scale) {
+        window.game.scale.refresh();
+    }
+});
+
+// Prevent scrolling on mobile
+document.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+}, { passive: false });
+</script>
 </body>
 </html>

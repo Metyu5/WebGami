@@ -50,7 +50,7 @@
                 </div>
             </div>
 
-            <div class="mb-6">
+            <!-- <div class="mb-6">
                 <a href="#" data-page="../content/courses.php" class="flex items-center px-4 py-3 text-sm rounded-xl hover:bg-menuHoverLight text-sidebarText hover:text-dark transition-all duration-200 spa-nav-link">
                     <i class="fas fa-book mr-3 text-lg"></i> Courses
                 </a>
@@ -70,7 +70,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div>
                 <h4 class="px-4 py-2 text-xs uppercase text-gray-500 tracking-widest font-semibold">Settings</h4>
