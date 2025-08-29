@@ -1,7 +1,7 @@
 <?php
 require_once '../../../config/koneksi.php';
 
-$kelas = 3; // fokus hanya kelas 3
+$kelas = 3; 
 $tingkat = isset($_GET['tingkat']) ? $_GET['tingkat'] : '';
 $tingkatSafe = $koneksi->real_escape_string($tingkat);
 

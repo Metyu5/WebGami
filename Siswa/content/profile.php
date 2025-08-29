@@ -13,7 +13,7 @@ $siswa_id_from_session = $_SESSION['siswaId'];
 $username_siswa = 'Pengguna';
 $nisn_siswa = 'Belum Tersedia';
 $kelas_siswa = 'Belum Ditentukan';
-$foto_siswa = '../../image/default_avatar.png'; // Path default
+$foto_siswa = '../../image/default_avatar.png'; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action'])) {
@@ -27,12 +27,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['notyf_type'] = "error";
             } else {
                 $update_foto = '';
-                $foto_path_for_db = ''; // Ini akan menyimpan path relatif dari root aplikasi
+                $foto_path_for_db = ''; 
                 $force_refresh_session_foto = false;
 
-                $upload_dir = '../../upload/profile/'; // Direktori fisik untuk menyimpan gambar
-                // Pastikan direktori ini bisa diakses dari root domain Anda
-                // Misal: http://localhost/WebGam/upload/profile/
+                $upload_dir = '../../upload/profile/'; 
+            
 
                 $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
                 $max_file_size = 2 * 1024 * 1024;
@@ -67,11 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         if ($row_old_foto = $result_old_foto->fetch_assoc()) {
                             $old_foto_db_path = $row_old_foto['foto'];
 
-                            // Pastikan path untuk unlink juga benar
-                            // Jika $old_foto_db_path sudah relatif dari root aplikasi (misal 'upload/profile/old.png')
-                            // maka kita butuh path fisik lengkapnya.
-                            // Contoh: $root_path_for_filesystem = '/path/ke/htdocs/WebGam/';
-                            // Atau jika Anda sudah di dalam 'siswa/content/', maka:
+                           
                             $full_old_foto_path_to_unlink = '../../' . $old_foto_db_path;
 
 
@@ -109,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($stmt->execute()) {
                         $_SESSION['username'] = $new_username;
                         if ($force_refresh_session_foto) {
-                            $_SESSION['foto'] = $foto_path_for_db; // Ini sangat penting!
+                            $_SESSION['foto'] = $foto_path_for_db; 
                         }
                         $_SESSION['notyf_message'] = "Profil berhasil diperbarui!";
                         $_SESSION['notyf_type'] = "success";
@@ -182,10 +177,9 @@ try {
         $nisn_siswa = htmlspecialchars($row['nisn']);
         $kelas_siswa = htmlspecialchars($row['kelas']);
 
-        // Set foto_siswa untuk tampilan di profile.php
         if (!empty($row['foto'])) {
-            $foto_siswa_db_path = htmlspecialchars($row['foto']); // Path dari DB, misal: upload/profile/xxx.png
-            $foto_siswa = '../../' . $foto_siswa_db_path . '?' . time(); // Relatif dari siswa/content/
+            $foto_siswa_db_path = htmlspecialchars($row['foto']); 
+            $foto_siswa = '../../' . $foto_siswa_db_path . '?' . time(); 
         } else {
             $foto_siswa = '../../image/default_avatar.png';
         }
@@ -267,13 +261,13 @@ $koneksi->close();
 
         <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-10 md:hidden">
             <div class="flex justify-around items-center h-16">
-                <a href="../pages/dashboard.php" class="flex flex-col items-center text-gray-500 hover:text-blue-600 text-sm" id="dashboardLinkBottomNav">
+                <a href="../dashboard.php" class="flex flex-col items-center text-gray-500 hover:text-blue-600 text-sm" id="dashboardLinkBottomNav">
                     <i class="fas fa-home text-xl mb-1"></i>
                     Beranda
                 </a>
-                <a href="#" class="flex flex-col items-center text-gray-500 hover:text-blue-600 text-sm">
+                <a href="/WebGami/Siswa/content/history.php" class="flex flex-col items-center text-gray-500 hover:text-blue-600 text-sm">
                     <i class="fas fa-trophy text-xl mb-1"></i>
-                    Prestasi
+                    History
                 </a>
                 <a href="#" class="flex flex-col items-center text-blue-600 font-semibold text-sm">
                     <i class="fas fa-user-circle text-xl mb-1"></i>
