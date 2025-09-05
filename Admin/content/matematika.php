@@ -272,15 +272,15 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
                                         :class="{ 'bg-blue-100 text-blue-900 font-semibold': selectedKelas === 0 }">
                                     🎓 Semua Kelas
                                 </button>
-                                <template x-for="i in 6" :key="i">
-                                    <button type="button" 
-                                            @click="selectedKelas = i; kelasFilter = i; open = false; loadData()" 
-                                            class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-900 transition-colors" 
-                                            role="menuitem"
-                                            :class="{ 'bg-blue-100 text-blue-900 font-semibold': selectedKelas === i }">
-                                        Kelas <span x-text="i"></span>
-                                    </button>
-                                </template>
+                               <template x-for="i in Array.from({length: 3}, (_, k) => k + 3)" :key="i">
+                                <button type="button" 
+                                    @click="selectedKelas = i; kelasFilter = i; open = false; loadData()" 
+                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-900 transition-colors" 
+                                    role="menuitem"
+                                    :class="{ 'bg-blue-100 text-blue-900 font-semibold': selectedKelas === i }">
+                                    Kelas <span x-text="i"></span>
+                                </button>
+                            </template>
                             </div>
                         </div>
                     </div>
@@ -623,22 +623,19 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 <script>
     function soalManager() {
         return {
-            // State variables
             showModal: false,
-            mode: 'add', // 'add', 'edit', 'view'
+            mode: 'add', 
             loading: false,
             search: '<?= htmlspecialchars($search) ?>',
             kelasFilter: <?= $kelas_filter ?>,
             
-            // Data for the table and pagination (fetched via AJAX)
             soalListData: [],
             totalRecords: 0,
             totalPages: 0,
             currentPage: <?= $page ?>,
-            limit: 10, // Must match PHP limit
-            offset: 0, // Will be calculated based on currentPage and limit
+            limit: 10, 
+            offset: 0, 
 
-            // Form data for add/edit modal
             form: {
                 soal_id: null,
                 nama: '',
@@ -648,7 +645,6 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
                 questions: []
             },
 
-            // Computed properties
             get modalTitle() {
                 switch(this.mode) {
                     case 'add': return '✨ Tambah Soal Baru';
@@ -658,17 +654,15 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
                 }
             },
 
-            // Initialize
             init() {
-                this.loadData(this.currentPage); // Load initial data when component initializes
+                this.loadData(this.currentPage); 
                 console.log('Soal Manager initialized');
             },
 
-            // Load data (for search/filter/pagination)
             async loadData(page = 1) {
-                this.loading = true; // Indicate loading
-                this.currentPage = page; // Update current page
-                this.offset = (this.currentPage - 1) * this.limit; // Calculate offset
+                this.loading = true; 
+                this.currentPage = page; 
+                this.offset = (this.currentPage - 1) * this.limit; 
 
                 const params = new URLSearchParams();
                 if (this.search) params.append('search', this.search);
@@ -679,8 +673,8 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
                     const response = await fetch(`../content/matematika.php?${params.toString()}`, {
                         method: 'GET',
                         headers: {
-                            'X-Requested-With': 'XMLHttpRequest', // Indicate AJAX request
-                            'Content-Type': 'application/json' // Expect JSON response
+                            'X-Requested-With': 'XMLHttpRequest', 
+                            'Content-Type': 'application/json' 
                         }
                     });
                     
