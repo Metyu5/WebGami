@@ -15,10 +15,10 @@
                 <span class="text-gray-600 font-medium" id="current-page-title">Dashboard</span> </div>
 
             <div class="flex items-center space-x-4">
-                <button class="relative text-gray-600 hover:text-dark transition-colors">
+                <!-- <button class="relative text-gray-600 hover:text-dark transition-colors">
                     <i class="fas fa-bell text-xl"></i>
                     <span class="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full h-5 w-5 flex items-center justify-center border-2 border-white">5</span>
-                </button>
+                </button> -->
                 <div class="flex items-center space-x-2 cursor-pointer group">
                     <img src="../assets/images/logo-tutwuri-SD.png" alt="User" class="w-8 h-8 rounded-full border-2 border-red group-hover:border-secondary transition-colors">
                     <span class="hidden md:inline text-sm font-medium text-dark group-hover:text-primary transition-colors">Admin</span>

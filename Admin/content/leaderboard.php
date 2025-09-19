@@ -260,7 +260,6 @@ if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQ
     $params = [];
     $types = '';
 
-    // Kondisi WHERE untuk filter
     $where_clause_main = "WHERE hp.rn = 1";
     if (!empty($search)) {
         $where_conditions[] = "s.username LIKE ?";
@@ -279,7 +278,7 @@ if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQ
         $where_clause_main .= " AND " . implode(" AND ", $where_conditions);
     }
     
-    // Kueri untuk mengambil total records
+
     $count_query = "
         SELECT COUNT(*) AS total
         FROM (
@@ -302,7 +301,6 @@ if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQ
     
     $total_pages = ceil($total_records / $limit);
 
-    // Kueri utama untuk mengambil data leaderboard
     $query = "
         SELECT
             s.username AS nama_siswa,

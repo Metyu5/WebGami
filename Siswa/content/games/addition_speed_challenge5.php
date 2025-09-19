@@ -1,7 +1,7 @@
 <?php
 require_once '../../../config/koneksi.php';
 
-$kelas = 3;     
+$kelas = 5;     
 $tingkat = isset($_GET['tingkat']) ? $_GET['tingkat'] : '';
 $tingkatSafe = $koneksi->real_escape_string($tingkat);
 

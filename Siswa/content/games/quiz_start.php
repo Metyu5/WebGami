@@ -911,14 +911,14 @@
                     this.isAnswering = true;
                     clearInterval(this.gameTimer);
 
-                    // ⭐ Perbaikan: Tambahkan baris ini untuk menghitung total pertanyaan yang sudah dijawab.
+                  
                     this.totalQuestions++;
 
                     const isCorrect = selectedAnswer === this.currentQuestion.correctAnswer;
 
                     if (isCorrect) {
                         this.correctAnswers++;
-
+                        // kode yang menyatakan setiap berhasil menjawab benar setiap soal nilai 10
                         const basePointsPerQuestion = 10;
                         const timeBonus = Math.floor(this.timeLeft * 0.5);
                         const scoreToAdd = basePointsPerQuestion + timeBonus;
