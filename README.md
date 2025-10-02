@@ -32,7 +32,7 @@ Tampilan halaman utama:
 
 Tampilan gameplay:  
 <p align="center">
-  <img src="./assets/github/tampilangame.jpeg" alt="Gameplay" width="600">
+  <img src="./assets/github/game1.jpeg" alt="Gameplay" width="600">
 </p>
 
 Tampilan skor siswa:  
