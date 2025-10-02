@@ -26,6 +26,7 @@ Dengan menggabungkan **pembelajaran + permainan**, anak-anak bisa mengasah kemam
 ## 📸 Preview Aplikasi
 
 Tampilan halaman utama:  
+<div class = "flex justify-center items-center">
 <img src="./assets/github/beranda.jpeg" alt="Homepage" width="600">
 
 Tampilan gameplay:  
@@ -33,7 +34,7 @@ Tampilan gameplay:
 
 Tampilan skor siswa:  
 <img src="./assets/github/history.png" alt="Homepage" width="600">
-
+</div>
 
 ## 📂 Struktur Project
 
