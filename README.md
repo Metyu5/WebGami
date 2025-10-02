@@ -32,7 +32,7 @@ Tampilan gameplay:
 <img src="./assets/github/tampilangame.jpeg" alt="Homepage" width="600">
 
 Tampilan skor siswa:  
-<img src="./assets/github/history.jpeg" alt="Homepage" width="600">
+<img src="./assets/github/history.png" alt="Homepage" width="600">
 
 
 ## 📂 Struktur Project
