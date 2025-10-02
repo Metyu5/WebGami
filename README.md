@@ -36,17 +36,15 @@ Dengan menggabungkan **pembelajaran + permainan**, anak-anak bisa mengasah kemam
 ├── index.php        # Halaman utama
 └── README.md        # Dokumentasi project
 
-📸 Preview Aplikasi
+## 📸 Preview Aplikasi
 
-Tampilan halaman utama:
+Tampilan halaman utama:  
+<img src="./assets/preview/homepage.png" alt="Homepage" width="600">
 
-![Homepage](./assets/preview/homepage.png)
+Tampilan gameplay:  
+<img src="./assets/preview/gameplay.png" alt="Gameplay" width="600">
 
-Tampilan gameplay:
+Tampilan skor siswa:  
+<img src="./assets/preview/scoreboard.png" alt="Scoreboard" width="600">
 
-![Gameplay](./assets/preview/gameplay.png)
-
-Tampilan skor siswa:
-
-![Scoreboard](./assets/preview/scoreboard.png)
 
