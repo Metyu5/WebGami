@@ -26,14 +26,14 @@ Dengan menggabungkan **pembelajaran + permainan**, anak-anak bisa mengasah kemam
 ## 📸 Preview Aplikasi
 
 Tampilan halaman utama:  
-<img src="./assets/preview/homepage.png" alt="Homepage" width="600">
+<img src="./assets/github/beranda.jpeg" alt="Homepage" width="600">
 
 Tampilan gameplay:  
-<img src="./assets/preview/gameplay.png" alt="Gameplay" width="600">
+<img src="./assets/github/tampilangame.jpeg" alt="Homepage" width="600">
 
 Tampilan skor siswa:  
-<img src="./assets/preview/scoreboard.png" alt="Scoreboard" width="600">
----
+<img src="./assets/github/history.jpeg" alt="Homepage" width="600">
+
 
 ## 📂 Struktur Project
 
