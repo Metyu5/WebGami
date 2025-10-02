@@ -26,15 +26,20 @@ Dengan menggabungkan **pembelajaran + permainan**, anak-anak bisa mengasah kemam
 ## 📸 Preview Aplikasi
 
 Tampilan halaman utama:  
-<div class = "flex justify-center items-center">
-<img src="./assets/github/beranda.jpeg" alt="Homepage" width="600">
+<p align="center">
+  <img src="./assets/github/beranda.jpeg" alt="Homepage" width="600">
+</p>
 
 Tampilan gameplay:  
-<img src="./assets/github/tampilangame.jpeg" alt="Homepage" width="600">
+<p align="center">
+  <img src="./assets/github/tampilangame.jpeg" alt="Gameplay" width="600">
+</p>
 
 Tampilan skor siswa:  
-<img src="./assets/github/history.png" alt="Homepage" width="600">
-</div>
+<p align="center">
+  <img src="./assets/github/history.png" alt="Scoreboard" width="600">
+</p>
+
 
 ## 📂 Struktur Project
 
