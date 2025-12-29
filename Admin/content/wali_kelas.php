@@ -3,7 +3,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include '../../config/koneksi.php'; 
 
-// Fungsi untuk mengirim response JSON
 function sendJsonResponse($status, $message, $data = null) {
     header('Content-Type: application/json');
     $response = ['status' => $status, 'message' => $message];
@@ -11,11 +10,9 @@ function sendJsonResponse($status, $message, $data = null) {
         $response['data'] = $data;
     }
     echo json_encode($response);
-    exit(); // Sangat penting: Hentikan eksekusi setelah mengirim JSON
+    exit(); 
 }
 
-// Handle AJAX requests for CRUD operations
-// Mengubah kondisi deteksi AJAX: Cukup cek $_POST['action']
 if (isset($_POST['action'])) {
     
     $action = $_POST['action'];
@@ -26,12 +23,10 @@ if (isset($_POST['action'])) {
         $email = trim($_POST['email']);
         $password = $_POST['password']; 
 
-        // Validasi input
         if (empty($nip) || empty($username) || empty($email) || empty($password)) {
             sendJsonResponse('error', 'Semua field (NIP, Nama Pengguna, Email, Password) harus diisi.');
         }
 
-        // Hash password sebelum menyimpan ke database
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $kategori = 'wali kelas'; 
 
@@ -41,7 +36,7 @@ if (isset($_POST['action'])) {
             if (mysqli_stmt_execute($stmt)) {
                 sendJsonResponse('success', 'Data Wali Kelas berhasil ditambahkan!');
             } else {
-                if (mysqli_errno($koneksi) == 1062) { // Duplicate entry error
+                if (mysqli_errno($koneksi) == 1062) { 
                     sendJsonResponse('error', 'NIP atau Email sudah terdaftar.');
                 } else {
                     sendJsonResponse('error', 'Gagal menambahkan data Wali Kelas: ' . mysqli_error($koneksi));
@@ -54,12 +49,11 @@ if (isset($_POST['action'])) {
     } 
     
     else if ($action === 'edit') {
-        // Menggunakan walkesId sesuai struktur tabel
-        $walkesId = $_POST['id']; // Tetap gunakan $_POST['id'] dari frontend, tapi mapping ke walkesId di PHP
+        $walkesId = $_POST['id']; 
         $nip = trim($_POST['nip']);
         $username = trim($_POST['username']);
         $email = trim($_POST['email']);
-        $password = $_POST['password']; // Password bisa kosong jika tidak diubah
+        $password = $_POST['password']; 
 
         if (empty($walkesId) || empty($nip) || empty($username) || empty($email)) {
             sendJsonResponse('error', 'Semua field (NIP, Nama Pengguna, Email) harus diisi untuk update.');
@@ -67,7 +61,7 @@ if (isset($_POST['action'])) {
 
         $query_parts = ["nip = ?", "username = ?", "email = ?"];
         $bind_types = "sss";
-        $bind_params = [&$nip, &$username, &$email]; // Menggunakan referensi untuk bind_param
+        $bind_params = [&$nip, &$username, &$email]; 
 
         if (!empty($password)) {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -76,20 +70,18 @@ if (isset($_POST['action'])) {
             $bind_params[] = &$hashedPassword;
         }
 
-        // Mengubah ID menjadi walkesId di WHERE clause
         $query = "UPDATE walikelas SET " . implode(", ", $query_parts) . " WHERE walkesId = ?";
         $bind_types .= "i";
-        $bind_params[] = &$walkesId; // Tambahkan walkesId sebagai parameter terakhir
+        $bind_params[] = &$walkesId; 
 
         $stmt = mysqli_prepare($koneksi, $query);
         if ($stmt) {
-            // Gunakan call_user_func_array untuk bind_param dengan parameter referensi
             call_user_func_array('mysqli_stmt_bind_param', array_merge([$stmt, $bind_types], $bind_params));
 
             if (mysqli_stmt_execute($stmt)) {
                 sendJsonResponse('success', 'Data Wali Kelas berhasil diperbarui!');
             } else {
-                if (mysqli_errno($koneksi) == 1062) { // Duplicate entry error
+                if (mysqli_errno($koneksi) == 1062) { 
                     sendJsonResponse('error', 'NIP atau Email sudah terdaftar.');
                 } else {
                     sendJsonResponse('error', 'Gagal memperbarui data Wali Kelas: ' . mysqli_error($koneksi));
@@ -102,16 +94,14 @@ if (isset($_POST['action'])) {
     }
     
     else if ($action === 'hapus') {
-        // Menggunakan walkesId sesuai struktur tabel
-        $walkesId = $_POST['id']; // Tetap gunakan $_POST['id'] dari frontend
+        $walkesId = $_POST['id']; 
         if (empty($walkesId)) {
             sendJsonResponse('error', 'ID tidak valid untuk penghapusan.');
         }
 
-        // Mengubah ID menjadi walkesId di WHERE clause
         $stmt = mysqli_prepare($koneksi, "DELETE FROM walikelas WHERE walkesId = ?");
         if ($stmt) {
-            mysqli_stmt_bind_param($stmt, "i", $walkesId); // Bind walkesId
+            mysqli_stmt_bind_param($stmt, "i", $walkesId); 
             if (mysqli_stmt_execute($stmt)) {
                 sendJsonResponse('success', 'Data Wali Kelas berhasil dihapus!');
             } else {
@@ -122,15 +112,12 @@ if (isset($_POST['action'])) {
             sendJsonResponse('error', 'Gagal menyiapkan statement: ' . mysqli_error($koneksi));
         }
     }
-    // Tidak perlu exit() di sini karena sendJsonResponse sudah memanggil exit()
 }
 
-// Handle GET requests (pagination and search) - Ini akan dieksekusi hanya jika BUKAN request AJAX POST
 $limit = 5;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-// Count total records
 $countSql = "SELECT COUNT(*) AS total FROM walikelas";
 if (!empty($searchQuery)) {
     $countSql .= " WHERE nip LIKE ? OR username LIKE ? OR email LIKE ?";
@@ -232,7 +219,7 @@ $no_start = $offset + 1;
 
     <div class="gradient-bg text-white py-8 mb-8">
         <div class="container mx-auto px-6">
-            <h1 class="text-4xl font-bold text-center mb-2"> 👨🏻‍🎓 Manajemen Data Wali Kelas</h1>
+            <h1 class="text-2xl font-bold text-center mb-2">Manajemen Data Wali Kelas</h1>
             <p class="text-center text-blue-100">Kelola daftar lengkap Wali Kelas, informasi detail mereka.</p>
         </div>
     </div>
@@ -244,8 +231,8 @@ $no_start = $offset + 1;
                     <div class="relative w-full">
                         <input type="text" x-model="searchQuery" 
                                @keydown.enter="searchWaliKelas()"
-                               placeholder="🔍 Cari Wali Kelas berdasarkan NIP, Nama Pengguna, atau Email..."
-                               class="pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full sm:w-80 transition-all duration-300 ease-in-out shadow-sm hover:shadow-md">
+                               placeholder="Cari Wali Kelas berdasarkan NIP..."
+                               class="text-sm pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full sm:w-80 transition-all duration-300 ease-in-out shadow-sm hover:shadow-md">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search h-5 w-5 text-gray-400"></i>
                         </div>
@@ -253,11 +240,11 @@ $no_start = $offset + 1;
                 </div>
                 
                 <button @click="openAddModal()"
-                        class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl flex items-center gap-2 transition-all transform hover:scale-105 shadow-lg">
+                        class="text-sm bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl flex items-center gap-2 transition-all transform  shadow-lg">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
-                    ✨ Tambah Wali Kelas
+                    Tambah Wali Kelas
                 </button>
             </div>
         </div>
@@ -267,11 +254,11 @@ $no_start = $offset + 1;
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
                         <tr>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">No.</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">NIP</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Nama Pengguna</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Email</th>
-                            <th class="px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Aksi</th>
+                            <th class="px-6 py-4 text-left text-xs font-normal text-gray-600 uppercase tracking-wider">No.</th>
+                            <th class="px-6 py-4 text-left text-xs font-normal text-gray-600 uppercase tracking-wider">NIP</th>
+                            <th class="px-6 py-4 text-left text-xs font-normal text-gray-600 uppercase tracking-wider">Nama Pengguna</th>
+                            <th class="px-6 py-4 text-left text-xs font-normal text-gray-600 uppercase tracking-wider">Email</th>
+                            <th class="px-6 py-4 text-center text-xs font-normal text-gray-600 uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -293,7 +280,7 @@ $no_start = $offset + 1;
                                 ?>
                                 <tr class="hover:bg-blue-50 transition-colors">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $no_start + $index; ?></td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900"><?php echo htmlspecialchars($wk['nip']); ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-normal text-gray-900"><?php echo htmlspecialchars($wk['nip']); ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><?php echo htmlspecialchars($wk['username']); ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium"><?php echo htmlspecialchars($wk['email']); ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2">
@@ -404,7 +391,7 @@ $no_start = $offset + 1;
              class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-xl mx-auto relative transform transition-all modal-content">
 
             <div class="sticky top-0 bg-white rounded-t-2xl border-b border-gray-200 px-6 py-4 flex justify-between items-center -mx-8 -mt-8 mb-6 modal-header">
-                <h3 x-text="isEditMode ? '✏️ Edit Data Wali Kelas' : '✨ Tambah Wali Kelas Baru'" 
+                <h3 x-text="isEditMode ? 'Edit Data Wali Kelas' : '✨ Tambah Wali Kelas Baru'" 
                     class="text-2xl font-bold text-gray-800"></h3>
                 <button type="button" @click="closeModal()" 
                         class="text-gray-400 hover:text-gray-600 p-2 rounded-full hover:bg-gray-100 transition-colors focus:outline-none">
@@ -461,11 +448,11 @@ $no_start = $offset + 1;
                 <div class="flex justify-end space-x-4 mt-6 border-t border-gray-200 pt-6">
                     <button type="button" @click="closeModal()" 
                             class="px-6 py-3 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors">
-                        ❌ Tutup
+                        Tutup
                     </button>
                     <button type="submit" :disabled="loading"
                             class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl flex items-center gap-2 transition-all disabled:opacity-50">
-                        <span x-show="!loading">💾 <span x-text="isEditMode ? 'Simpan Perubahan' : 'Tambah Wali Kelas'"></span></span>
+                        <span x-show="!loading"><span x-text="isEditMode ? 'Simpan Perubahan' : 'Tambah Wali Kelas'"></span></span>
                         <span x-show="loading" class="flex items-center">
                             <svg class="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

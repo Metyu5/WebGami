@@ -5,7 +5,6 @@ ini_set('display_errors', 1);
 
 include_once '../../config/koneksi.php';
 
-// Fungsi untuk mengirim response JSON
 function sendJsonResponse($status, $message, $data = null) {
     header('Content-Type: application/json');
     $response = ['status' => $status, 'message' => $message];
@@ -16,7 +15,6 @@ function sendJsonResponse($status, $message, $data = null) {
     exit();
 }
 
-// Handle AJAX requests
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['action'])) {
         $action = $_POST['action'];
@@ -27,17 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $kelas = trim($_POST['kelas']);
             $password_input = $_POST['password'];
 
-            // Validasi input
             if (empty($nisn) || empty($username) || empty($password_input) || empty($kelas)) {
                 sendJsonResponse('error', 'Semua field (NISN, Nama Pengguna, Password, Kelas) harus diisi.');
             }
 
-            // Hash password
             $password_hashed = password_hash($password_input, PASSWORD_DEFAULT);
             $kategori = 'siswa';
             $foto_filename = 'assets/images/placeholder-male.jpg';
 
-            // Handle file upload
             $target_dir_physical = '../../upload/profile/';
             if (!is_dir($target_dir_physical)) {
                 if (!mkdir($target_dir_physical, 0777, true)) {
@@ -63,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
 
-            // Insert to database
             $stmt = $koneksi->prepare("INSERT INTO siswa (nisn, username, password, foto, kelas, kategori) VALUES (?, ?, ?, ?, ?, ?)");
             if ($stmt === false) {
                 sendJsonResponse('error', 'Gagal menyiapkan statement INSERT: ' . $koneksi->error);
@@ -94,12 +88,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 sendJsonResponse('error', 'Semua field (NISN, Nama Pengguna, Kelas) harus diisi untuk update.');
             }
 
-            // Prepare update query parts
             $query_parts = ["nisn = ?", "username = ?", "kelas = ?"]; 
             $bind_types = "sss"; 
             $bind_params = [$nisn, $username, $kelas]; 
 
-            // Add password to update if provided
             if (!empty($password_input)) {
                 $password_hashed = password_hash($password_input, PASSWORD_DEFAULT);
                 $query_parts[] = "password = ?";
@@ -107,7 +99,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $bind_params[] = $password_hashed;
             }
 
-            // Get current photo path
             $current_foto_path_db = '';
             $stmt_old_foto = $koneksi->prepare("SELECT foto FROM siswa WHERE siswaId = ?");
             if ($stmt_old_foto !== false) {
@@ -118,7 +109,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $stmt_old_foto->close();
             }
 
-            // Handle new photo upload
             if (isset($_FILES['foto']) && $_FILES['foto']['error'] == UPLOAD_ERR_OK) {
                 $target_dir_physical = '../../upload/profile/';
                 $imageFileType = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
@@ -137,7 +127,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $bind_types .= "s";
                     $bind_params[] = $foto_new_db_path;
 
-                    // Delete old photo if not placeholder
                     $current_foto_physical_path = '../../' . $current_foto_path_db;
                     if (!empty($current_foto_path_db) && file_exists($current_foto_physical_path) && strpos($current_foto_path_db, 'placeholder') === false) {
                         unlink($current_foto_physical_path);
@@ -147,7 +136,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
 
-            // Execute update
             $query_final = "UPDATE siswa SET " . implode(", ", $query_parts) . " WHERE siswaId = ?";
             $bind_types .= "i";
             $bind_params[] = $siswaId;
@@ -157,7 +145,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 sendJsonResponse('error', 'Gagal menyiapkan statement UPDATE: ' . $koneksi->error);
             }
 
-            // Bind parameters
             $refs = array();
             foreach($bind_params as $key => $value) {
                 $refs[$key] = &$bind_params[$key];
@@ -323,7 +310,7 @@ $no_start = $offset + 1;
 
     <div class="gradient-bg text-white py-8 mb-8">
         <div class="container mx-auto px-6">
-            <h1 class="text-4xl font-bold text-center mb-2">🎓 Manajemen Data Siswa</h1>
+            <h1 class="text-2xl font-bold text-center mb-2">Manajemen Data Siswa</h1>
             <p class="text-center text-blue-100">Kelola daftar lengkap siswa, informasi detail mereka.</p>
         </div>
     </div>
@@ -335,8 +322,8 @@ $no_start = $offset + 1;
                     <div class="relative w-full">
                         <input type="text" x-model="searchQuery" 
                                @keydown.enter="searchStudents()"
-                               placeholder="🔍 Cari siswa berdasarkan NISN atau Nama Pengguna..."
-                               class="pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full sm:w-80 transition-all duration-300 ease-in-out shadow-sm hover:shadow-md">
+                               placeholder="Cari siswa berdasarkan NISN..."
+                               class="text-sm pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full sm:w-80 transition-all duration-300 ease-in-out shadow-sm hover:shadow-md">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search h-5 w-5 text-gray-400"></i>
                         </div>
@@ -344,11 +331,11 @@ $no_start = $offset + 1;
                 </div>
                 
                 <button @click="openAddModal()"
-                        class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl flex items-center gap-2 transition-all transform hover:scale-105 shadow-lg">
+                        class="text-sm bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl flex items-center gap-2 transition-all transform  shadow-lg">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
-                    ✨ Tambah Siswa
+                    Tambah Siswa
                 </button>
             </div>
         </div>
@@ -358,12 +345,12 @@ $no_start = $offset + 1;
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
                         <tr>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">No.</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Foto</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">NISN</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Nama Pengguna</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Kelas</th>
-                            <th class="px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Aksi</th>
+                            <th class="px-6 py-4 text-left text-xs font-normal text-gray-600 uppercase tracking-wider">No.</th>
+                            <th class="px-6 py-4 text-left text-xs font-normal text-gray-600 uppercase tracking-wider">Foto</th>
+                            <th class="px-6 py-4 text-left text-xs font-normal text-gray-600 uppercase tracking-wider">NISN</th>
+                            <th class="px-6 py-4 text-left text-xs font-normal text-gray-600 uppercase tracking-wider">Nama Pengguna</th>
+                            <th class="px-6 py-4 text-left text-xs font-normal text-gray-600 uppercase tracking-wider">Kelas</th>
+                            <th class="px-6 py-4 text-center text-xs font-normal text-gray-600 uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -396,7 +383,7 @@ $no_start = $offset + 1;
                                             <img class="h-10 w-10 rounded-full object-cover" src="<?php echo $display_foto_path; ?>" alt="Foto Siswa">
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900"><?php echo htmlspecialchars($student['nisn']); ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-normal text-gray-900"><?php echo htmlspecialchars($student['nisn']); ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><?php echo htmlspecialchars($student['username']); ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">Kelas <span class="font-bold" ><?php echo htmlspecialchars($student['kelas']); ?></span></td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2">
@@ -414,7 +401,7 @@ $no_start = $offset + 1;
                                         </button>
                                         <button type="button" 
                                                 @click="confirmDelete('<?php echo htmlspecialchars($student['siswaId']); ?>')"
-                                                class="text-red-600 hover:text-red-900 p-2 rounded-full hover:bg-red-100 transition-all"
+                                                class="text-normal text-red-600 hover:text-red-900 p-2 rounded-full hover:bg-red-100 transition-all"
                                                 title="Hapus">
                                             <i class="fas fa-trash-alt text-lg"></i>
                                         </button>
@@ -508,7 +495,7 @@ $no_start = $offset + 1;
              class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-xl mx-auto relative transform transition-all modal-content">
 
             <div class="sticky top-0 bg-white rounded-t-2xl border-b border-gray-200 px-6 py-4 flex justify-between items-center -mx-8 -mt-8 mb-6 modal-header">
-                <h3 x-text="isEditMode ? '✏️ Edit Data Siswa' : '✨ Tambah Siswa Baru'" 
+                <h3 x-text="isEditMode ? 'Edit Data Siswa' : '✨ Tambah Siswa Baru'" 
                     class="text-2xl font-bold text-gray-800"></h3>
                 <button type="button" @click="closeModal()" 
                         class="text-gray-400 hover:text-gray-600 p-2 rounded-full hover:bg-gray-100 transition-colors focus:outline-none">
@@ -578,11 +565,11 @@ $no_start = $offset + 1;
                 <div class="flex justify-end space-x-4 mt-6 border-t border-gray-200 pt-6">
                     <button type="button" @click="closeModal()" 
                             class="px-6 py-3 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors">
-                        ❌ Tutup
+                        Tutup
                     </button>
                     <button type="submit" :disabled="loading"
                             class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl flex items-center gap-2 transition-all disabled:opacity-50">
-                        <span x-show="!loading">💾 <span x-text="isEditMode ? 'Simpan Perubahan' : 'Tambah Siswa'"></span></span>
+                        <span x-show="!loading"><span x-text="isEditMode ? 'Simpan Perubahan' : 'Tambah Siswa'"></span></span>
                         <span x-show="loading" class="flex items-center">
                             <svg class="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

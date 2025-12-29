@@ -49,7 +49,6 @@
   <body class="bg-gradient-to-r from-blue-200 via-pink-100 to-yellow-100 min-h-screen flex items-center justify-center p-4">
 
     <div id="form-container" class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 space-y-6 border-[6px] border-red-300 fade-in">
-      <!-- Logo Section -->
       <div class="flex justify-center mb-6">
         <img
           src="image/logo-tutwuri-SD.png"
@@ -59,12 +58,11 @@
         />
       </div>
 
-      <h2 class="text-3xl font-extrabold text-center text-blue-700 mb-4">Login - SIGAM </h2>
+      <h2 class="text-2xl font-semibold text-center text-blue-700 mb-4">Login - SIGAM </h2>
 
       <form action="auth/proses_login.php" method="POST" class="space-y-4"> 
-        <!-- Email -->
         <div>
-          <label for="email" class="block mb-1 text-sm font-semibold text-gray-700">Email</label>
+          <label for="email" class="block mb-1 text-sm font-normal text-gray-700">Email</label>
           <div class="flex items-center border-2 border-blue-200 rounded-xl px-3 py-2 bg-blue-50 shadow-inner">
             <span class="material-icons text-blue-500 text-lg mr-2">email</span>
             <input
@@ -78,9 +76,8 @@
           </div>
         </div>
 
-        <!-- Password -->
         <div x-data="{ showPassword: false }">
-          <label for="password" class="block mb-1 text-sm font-semibold text-gray-700">Password</label>
+          <label for="password" class="block mb-1 text-sm font-normal text-gray-700">Password</label>
           <div class="flex items-center border-2 border-yellow-200 rounded-xl px-3 py-2 bg-yellow-50 shadow-inner">
             <span class="material-icons text-yellow-500 text-lg mr-2">lock</span>
             <input
@@ -92,15 +89,15 @@
               required
             />
             <button type="button" @click="showPassword = !showPassword" class="ml-2 text-gray-500 focus:outline-none">
-              <span x-show="!showPassword" class="material-icons">visibility_off</span> <!-- Closed eye icon -->
-              <span x-show="showPassword" class="material-icons">visibility</span> <!-- Open eye icon -->
+              <span x-show="!showPassword" class="material-icons">visibility_off</span> 
+              <span x-show="showPassword" class="material-icons">visibility</span> 
             </button>
           </div>
         </div>
 
         <!-- Konfirmasi Password -->
         <div x-data="{ showConfirmPassword: false }">
-          <label for="confirm-password" class="block mb-1 text-sm font-semibold text-gray-700">Konfirmasi Password</label>
+          <label for="confirm-password" class="block mb-1 text-sm font-normal text-gray-700">Konfirmasi Password</label>
           <div class="flex items-center border-2 border-green-200 rounded-xl px-3 py-2 bg-green-50 shadow-inner">
             <span class="material-icons text-green-500 text-lg mr-2">check_circle</span>
             <input
@@ -112,17 +109,15 @@
               required
             />
             <button type="button" @click="showConfirmPassword = !showConfirmPassword" class="ml-2 text-gray-500 focus:outline-none">
-              <span x-show="!showConfirmPassword" class="material-icons">visibility_off</span> <!-- Closed eye icon -->
-              <span x-show="showConfirmPassword" class="material-icons">visibility</span> <!-- Open eye icon -->
+              <span x-show="!showConfirmPassword" class="material-icons">visibility_off</span> 
+              <span x-show="showConfirmPassword" class="material-icons">visibility</span> 
             </button>
           </div>
         </div>
 
-        <!-- Dropdown Role -->
-        <div x-data="{ open: false, selected: '👶 Pilih Peran', kategori: '' }" class="relative">
-          <label class="block mb-1 text-sm font-semibold text-blue-700">Peran</label>
+        <div x-data="{ open: false, selected: 'Pilih Peran', kategori: '' }" class="relative">
+          <label class="block mb-1 text-sm font-normal text-blue-700">Peran</label>
           
-          <!-- Dropdown Button -->
           <button
             @click="open = !open"
             type="button"
@@ -132,11 +127,7 @@
             <span class="material-icons text-blue-500 ml-2">arrow_drop_down</span>
           </button>
 
-          <!-- Hidden Input for Form Submission -->
           <input type="hidden" name="kategori" x-bind:value="kategori" required />
-
-
-          <!-- Dropdown Items -->
           <div
             x-show="open"
             @click.away="open = false"
@@ -174,7 +165,6 @@
   </body>
 
   <script>
-    // Menampilkan pesan error atau success dari proses login
     <?php if (isset($_GET['error'])): ?>
         const errorMessage = "<?php echo $_GET['error']; ?>";
         if (errorMessage === "input_kosong") {

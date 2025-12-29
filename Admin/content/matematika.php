@@ -1,25 +1,22 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-header('Content-Type: application/json'); // Default to JSON for AJAX handling
+header('Content-Type: application/json'); 
 
 include_once '../../config/koneksi.php';
 
-// Handle AJAX requests for CRUD operations
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    // header('Content-Type: application/json'); // Already set above
+  
     
     switch ($_POST['action']) {
         case 'get_detail':
             $soal_id = (int)$_POST['soal_id'];
             
-            // Get soal info
             $stmt = $koneksi->prepare("SELECT * FROM soal WHERE soal_id = ?");
             $stmt->bind_param("i", $soal_id);
             $stmt->execute();
             $soal = $stmt->get_result()->fetch_assoc();
             
-            // Get detail soal
             $stmt = $koneksi->prepare("SELECT * FROM detail_soal WHERE soal_id = ? ORDER BY detail_id");
             $stmt->bind_param("i", $soal_id);
             $stmt->execute();
@@ -39,26 +36,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $tingkat = $_POST['tingkat'];
                 
                 if ($soal_id > 0) {
-                    // Update existing
                     $stmt = $koneksi->prepare("UPDATE soal SET nama = ?, kategori = ?, kelas = ?, tingkat = ? WHERE soal_id = ?");
                     $stmt->bind_param("ssisi", $nama, $kategori, $kelas, $tingkat, $soal_id);
                     $stmt->execute();
                 } else {
-                    // Insert new
                     $stmt = $koneksi->prepare("INSERT INTO soal (nama, kategori, kelas, tingkat) VALUES (?, ?, ?, ?)");
                     $stmt->bind_param("ssis", $nama, $kategori, $kelas, $tingkat);
                     $stmt->execute();
                     $soal_id = $koneksi->insert_id;
                 }
                 
-                // Delete existing details if updating
                 if (isset($_POST['soal_id']) && $_POST['soal_id'] > 0) {
                     $stmt = $koneksi->prepare("DELETE FROM detail_soal WHERE soal_id = ?");
                     $stmt->bind_param("i", $soal_id);
                     $stmt->execute();
                 }
                 
-                // Insert details
                 if (isset($_POST['pertanyaan']) && is_array($_POST['pertanyaan'])) {
                     $stmt = $koneksi->prepare("INSERT INTO detail_soal (soal_id, pertanyaan, jawaban, skor) VALUES (?, ?, ?, ?)");
                     
@@ -87,12 +80,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 
                 $soal_id = (int)$_POST['soal_id'];
                 
-                // Delete details first
                 $stmt = $koneksi->prepare("DELETE FROM detail_soal WHERE soal_id = ?");
                 $stmt->bind_param("i", $soal_id);
                 $stmt->execute();
                 
-                // Delete soal
                 $stmt = $koneksi->prepare("DELETE FROM soal WHERE soal_id = ?");
                 $stmt->bind_param("i", $soal_id);
                 $stmt->execute();
@@ -122,16 +113,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 }
 
 
-// Handle AJAX requests for data fetching (search, filter, pagination)
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
-    // Get filter parameters
     $search = isset($_GET['search']) ? trim($_GET['search']) : '';
     $kelas_filter = isset($_GET['kelas']) ? (int)$_GET['kelas'] : 0;
     $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
     $limit = 10;
     $offset = ($page - 1) * $limit;
 
-    // Build query
     $where_conditions = [];
     $params = [];
     $types = '';
@@ -152,7 +140,6 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 
     $where_clause = !empty($where_conditions) ? 'WHERE ' . implode(' AND ', $where_conditions) : '';
 
-    // Get total count
     $count_query = "SELECT COUNT(*) as total FROM soal $where_clause";
     if (!empty($params)) {
         $stmt = $koneksi->prepare($count_query);
@@ -165,7 +152,6 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 
     $total_pages = ceil($total_records / $limit);
 
-    // Get soal data
     $query = "SELECT * FROM soal $where_clause ORDER BY soal_id DESC LIMIT $limit OFFSET $offset";
     if (!empty($params)) {
         $stmt = $koneksi->prepare($query);
@@ -178,7 +164,6 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 
     $soal_list = $result->fetch_all(MYSQLI_ASSOC);
 
-    // Return JSON response for AJAX requests
     echo json_encode([
         'success' => true,
         'soal_list' => $soal_list,
@@ -190,16 +175,12 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         'search' => $search,
         'kelas_filter' => $kelas_filter
     ]);
-    exit; // Stop execution after sending JSON
+    exit; 
 }
 
-// If not an AJAX request, render the full HTML page (initial load)
-// This part will only execute on the initial page load, or if accessed directly
-// header('Content-Type: text/html'); // Reset header for HTML content
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $kelas_filter = isset($_GET['kelas']) ? (int)$_GET['kelas'] : 0;
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-// Initial load doesn't need to fetch data here, Alpine.js will do it via AJAX init.
 ?>
 
 <style>
@@ -221,7 +202,7 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 <div x-data="soalManager()" x-cloak>
     <div class="gradient-bg text-white py-8 mb-8">
         <div class="container mx-auto px-6">
-            <h1 class="text-4xl font-bold text-center mb-2">📚 Manajemen Soal Matematika</h1>
+            <h1 class="text-4xl font-bold text-center mb-2">Manajemen Soal Matematika</h1>
             <p class="text-center text-blue-100">Kelola soal matematika dengan mudah dan efisien</p>
         </div>
     </div>
@@ -234,7 +215,7 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
                         <input type="text" 
                                x-model="search" 
                                @input.debounce.500ms="loadData()"
-                               placeholder="🔍 Cari soal..."
+                               placeholder="Cari soal..."
                                class="pl-4 pr-10 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full sm:w-64 transition-all duration-300 ease-in-out shadow-sm hover:shadow-md">
                         <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
                             <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -270,7 +251,7 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-900 transition-colors" 
                                         role="menuitem"
                                         :class="{ 'bg-blue-100 text-blue-900 font-semibold': selectedKelas === 0 }">
-                                    🎓 Semua Kelas
+                                    Semua Kelas
                                 </button>
                                <template x-for="i in Array.from({length: 3}, (_, k) => k + 3)" :key="i">
                                 <button type="button" 
@@ -291,7 +272,7 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
-                    ✨ Tambah Soal
+                    Tambah Soal
                 </button>
             </div>
         </div>
@@ -301,12 +282,12 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
                         <tr>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">No</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">📝 Nama Soal</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">📂 Kategori</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">🎓 Kelas</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">⭐ Tingkat</th>
-                            <th class="px-6 py-4 text-right text-xs font-bold text-gray-600 uppercase tracking-wider">🔧 Aksi</th>
+                            <th class="px-6 py-4 text-left text-xs font-normal text-gray-600 uppercase tracking-wider">No</th>
+                            <th class="px-6 py-4 text-left text-xs font-normal text-gray-600 uppercase tracking-wider">Nama Soal</th>
+                            <th class="px-6 py-4 text-left text-xs font-normal text-gray-600 uppercase tracking-wider">Kategori</th>
+                            <th class="px-6 py-4 text-left text-xs font-normal text-gray-600 uppercase tracking-wider">Kelas</th>
+                            <th class="px-6 py-4 text-left text-xs font-normal text-gray-600 uppercase tracking-wider">Tingkat</th>
+                            <th class="px-6 py-4 text-right text-xs font-normal text-gray-600 uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -315,7 +296,7 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
                                 <tr class="hover:bg-blue-50 transition-colors">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" x-text="offset + index + 1"></td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-semibold text-gray-900" x-text="soal.nama"></div>
+                                        <div class="text-sm font-normal text-gray-900" x-text="soal.nama"></div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-3 py-1 inline-flex text-xs font-medium rounded-full bg-blue-100 text-blue-800" x-text="soal.kategori"></span>
@@ -324,7 +305,7 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
                                         Kelas <span x-text="soal.kelas"></span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-3 py-1 inline-flex text-xs font-semibold rounded-full"
+                                        <span class="px-3 py-1 inline-flex text-xs font-normal rounded-full"
                                               :class="{
                                                   'bg-green-100 text-green-800': soal.tingkat === 'Mudah',
                                                   'bg-yellow-100 text-yellow-800': soal.tingkat === 'Sedang',
@@ -434,7 +415,7 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
                 <form @submit.prevent="saveSoal()">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">📝 Nama Soal</label>
+                            <label class="block text-sm font-normal text-gray-700 mb-2">Nama Soal</label>
                             <input type="text" 
                                    x-model="form.nama" 
                                    :disabled="mode === 'view'"
@@ -442,7 +423,7 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
                                    required>
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">📂 Kategori</label>
+                            <label class="block text-sm font-normal text-gray-700 mb-2">Kategori</label>
                             <input type="text" 
                                    x-model="form.kategori" 
                                    :disabled="mode === 'view'"
@@ -453,7 +434,7 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
                         <div x-data="{ openKelasModal: false, selectedKelasModal: form.kelas }" 
                              @click.away="openKelasModal = false" class="relative"
                              x-init="$watch('form.kelas', value => selectedKelasModal = value)">
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">🎓 Kelas</label>
+                            <label class="block text-sm font-normal text-gray-700 mb-2">Kelas</label>
                             <button type="button" 
                                     @click="openKelasModal = !openKelasModal"
                                     :disabled="mode === 'view'"
